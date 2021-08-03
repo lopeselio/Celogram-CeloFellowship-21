@@ -1,5 +1,5 @@
 import "./Components.css";
-import niftysubs from '../assets/celo.svg';
+import celogram from '../assets/celo.svg';
 import { 
   Button, 
   HStack, 
@@ -40,11 +40,11 @@ function Header({ currentAccount }) {
   return (
     <HStack padding={3} className="Header">
       <div className="headercomp">
-        <img className="headerlogo" src={niftysubs} alt="Niftysubs Logo"></img>
+        <Link to="/"><img className="headerlogo" src={celogram} alt="CeloGram Logo"></img></Link>
       </div>
-      <Button colorScheme="whatsapp" variant="ghost" className="buttonComp1">Dashboard</Button>
+      <Link to="/dashboard"><Button colorScheme="whatsapp" variant="ghost" className="buttonComp1">Dashboard</Button></Link>
       <Spacer />
-     <Button colorScheme="whatsapp" variant="solid" className="buttonComp">CELOGRAM NFT</Button>
+      <Link to="/NFT"><Button colorScheme="whatsapp" variant="solid" className="buttonComp">CELOGRAM NFT</Button></Link>
       <div className="headercomp">
         {
           isMetamaskInstalled ? 
@@ -54,15 +54,15 @@ function Header({ currentAccount }) {
             borderRadius="full"
             ml={3}
             mr={-2}
-            background="rgba(230,1,122,0.08)"
+            background="#FEE09D"
           >
-            <TagLabel color="#E6017A">
+            <TagLabel color="#2E3337">
                 {`${currentAccount.substr(0,6)}...${currentAccount.substr(-4)}`}
             </TagLabel>
-            <Avatar borderStyle="solid" borderColor="#E6017A" borderWidth="2px" padding="1px" mr="-13px" ml={4} size="sm" bg="transparent" src={avatar} />
+            <Avatar borderStyle="solid" borderColor="#37CE81" borderWidth="2px" padding="1px" mr="-13px" ml={4} size="sm" bg="transparent" src={avatar} />
           </Tag>
           :
-          <Tag alignSelf="flex-start" color="#FBCB5E" backgroundColor="#2e3337">Connect Wallet</Tag>
+          <Tag alignSelf="flex-start" color="#37CE81" backgroundColor="#2e3337">Connect Wallet</Tag>
           :
           <Button isLoading={isLoading} alignSelf="flex-start" color="#E6017A" backgroundColor="rgba(230,1,122,0.08)">Install Metamask</Button>
         }
