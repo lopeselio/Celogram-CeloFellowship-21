@@ -11,11 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
+import Header from "./Components/Header";
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <div>Hello world</div>
+      <Header />
     </ChakraProvider>
   );
 }
