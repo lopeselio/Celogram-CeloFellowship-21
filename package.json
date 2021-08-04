@@ -20,6 +20,7 @@
     "react-icons": "^3.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "seed-color": "^2.0.1",
     "web-vitals": "^0.2.2",
     "web3": "^1.5.0",
     "web3modal": "^1.9.4"
