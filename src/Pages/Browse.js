@@ -193,9 +193,13 @@ export default function Browse({ currentAccount }) {
     <div className="HomeScreen">
       <HStack spacing={0} className="MainSectionHome">
         <section className="sidepanel">
+          {/* <br /> */}
           <Heading as="h4" fontSize={15} className="sidepaneltitle">
             Creators for you
           </Heading>
+          <div className="descrip">
+          <b className="bolddesc">CeloGram</b> is the place to share Photos and Videos with fellow creators on Celo. Connect with others, Mint/Shop NFTs and donate to Good Causes.
+          </div>
           <VStack
             marginTop={3}
             alignContent="flex-start"
