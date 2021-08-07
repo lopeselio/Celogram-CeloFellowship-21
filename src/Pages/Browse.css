@@ -14,7 +14,7 @@
     font-size: 20px !important;
     font-weight: 600 !important;
     text-align: left;
-    color: #FEE09D;
+    color: #3CB371;
 }
 .mainpanel{
     width:80vw;
@@ -69,6 +69,19 @@
 .artistname{
     font-size: 14px;
     color:#3CB371;
+}
+
+.descrip {
+    color: #fff !important;
+    font-weight: 200px;
+    font-size: 13px;
+    padding: 10px;
+}
+
+.bolddesc {
+    color: #FEE09D;
+    font-weight: 250px;
+    font-size: 19px;
 }
 .category{
     font-size:13px;
