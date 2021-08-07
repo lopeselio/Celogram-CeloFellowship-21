@@ -61,133 +61,7 @@ export default function Browse({ currentAccount }) {
   // const [isStartingFlow, setIsStartingFlow] = useState(false)
   const [isPageLoading, setIsPageLoading] = useState(true)
   const { id } = useParams()
-  // const [isSuperFluidLoading, setIsSuperFluidIsLoading] = useState(false)
-
-  // const [state, dispatch] = useReducer(stateReducer, {
-  //   lockAddress: '',
-  //   sender: '',
-  //   video: {},
-  //   isLocked: true,
-  // })
-
-  // useEffect(() => {
-  //   // loading the fundraising widget.
-  //   var loadScript = function (src) {
-  //     var tag = document.createElement('script')
-  //     tag.async = false
-  //     tag.src = src
-  //     var body = document.getElementsByTagName('body')[0]
-  //     body.appendChild(tag)
-  //   }
-  //   loadScript('https://niftysubs.github.io/fundraising-widget/main.js')
-  // }, [])
-
-  // useEffect(() => {
-  //   if (currentAccount) getVideoData()
-  // }, [currentAccount])
-
-  // const getVideoData = async () => {
-  //   let client = await getClient()
-  //   let query = new Where('videoId').eq(id)
-  //   let video = await queryThread(
-  //     client,
-  //     process.env.REACT_APP_TEXTILE_THREAD_ID,
-  //     'videoData',
-  //     query
-  //   )
-  //   let lockAddress = video[0].lockAddress
-  //   dispatch({ type: ACTIONS.SET_LOCK_ADDRESS, payload: lockAddress })
-  //   dispatch({ type: ACTIONS.SET_VIDEO, payload: video[0] })
-  //   init(lockAddress)
-  // }
-
-  // const init = async (lockAddress) => {
-  //   setIsSuperFluidIsLoading(true)
-  //   web3 = new Web3(window.ethereum)
-
-  //   sf = new Framework({
-  //     ethers: new Web3Provider(window.ethereum),
-  //     tokens: ['fUSDC'],
-  //   })
-
-  //   await sf.initialize()
-  //   console.log(web3)
-
-  //   LockContract = new web3.eth.Contract(publicLockABI, lockAddress)
-  //   let shouldContentBeLocked = await LockContract.methods.getHasValidKey(
-  //     currentAccount
-  //   )
-  //   dispatch({ type: ACTIONS.SET_IS_LOCKED, payload: shouldContentBeLocked })
-
-  //   await subscribeToLockEvents()
-
-  //   changeFlowSender(currentAccount)
-  // }
-
-  // const subscribeToLockEvents = async () => {
-  //   console.log(currentAccount)
-  //   LockContract.events
-  //     .Transfer({ filter: { to: currentAccount }, fromBlock: 0 }, (e) => {})
-  //     .on('connected', (subscriptionId) => {
-  //       console.log(subscriptionId)
-  //     })
-  //     .on('data', (e) => {
-  //       console.log('Key Granted')
-  //       dispatch({ type: ACTIONS.SET_IS_LOCKED, payload: false })
-  //     })
-
-  //   LockContract.events
-  //     .CancelKey({ filter: { owner: currentAccount }, fromBlock: 0 }, (e) => {})
-  //     .on('connected', (subscriptionId) => {
-  //       console.log(subscriptionId)
-  //     })
-  //     .on('data', (e) => {
-  //       console.log('Key Cancelled!')
-  //       dispatch({ type: ACTIONS.SET_IS_LOCKED, payload: true })
-  //     })
-  // }
-
-  // const changeFlowSender = async (currentAccount) => {
-  //   const bob = sf.user({
-  //     address: currentAccount,
-  //     token: sf.tokens.fUSDCx.address,
-  //   })
-  //   dispatch({ type: ACTIONS.SET_SENDER, payload: bob })
-  //   setIsSuperFluidIsLoading(false)
-  //   setIsPageLoading(false)
-  // }
-
-  // const startFlow = async (flowRate) => {
-  //   setIsStartingFlow(true)
-  //   console.log(state.video.lockAddress)
-  //   const carol = sf.user({
-  //     address: process.env.REACT_APP_SUPERAPP_ADDRESS,
-  //     token: sf.tokens.fUSDCx.address,
-  //   })
-  //   console.log(state.video.lockAddress)
-  //   const userData = await web3.eth.abi.encodeParameters(
-  //     ['address'],
-  //     [state.video.lockAddress]
-  //   )
-  //   const tx = state.sender
-  //     .flow({
-  //       recipient: carol,
-  //       flowRate,
-  //       userData,
-  //     })
-  //     .then(() => {
-  //       setIsStartingFlow(false)
-  //     })
-  //     .catch((error) => {
-  //       setIsStartingFlow(false)
-  //       toast({
-  //         position: 'bottom-right',
-  //         title: `Request Rejected`,
-  //         status: 'error',
-  //         isClosable: true,
-  //       })
-  //     })
-  // }
+  
 
   return (
     <div className="HomeScreen">
@@ -278,8 +152,9 @@ export default function Browse({ currentAccount }) {
           height="100%"
           className="mainsection"
         >
+        </HStack>
           
-          
+        <HStack> 
             <ChatInterface
               // pubsubTopic={state.video.videoId}
               // isLocked={state.isLocked}
