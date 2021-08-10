@@ -28,7 +28,8 @@
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.2",
     "web3": "^1.5.0",
-    "web3modal": "^1.9.4"
+    "web3modal": "^1.9.4",
+    "@celo/contractkit": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
