@@ -48,7 +48,7 @@ class Upload extends Component {
           // divider={<Divider borderColor="gray.200" />}
           width="100%"
           align="stretch"
-          backgroundColor="#225e3d"
+          backgroundColor="#1F1F23"
           padding="20px"
           borderBottomColor="#3CB371"
           borderBottomWidth="4px"
