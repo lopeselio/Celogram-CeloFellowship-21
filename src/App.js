@@ -19,6 +19,8 @@ import "@fontsource/inter";
 import Web3 from "web3";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Browse from './Pages/Browse';
+const ContractKit = require("@celo/contractkit")
+let kit
 
 function App() {
 
@@ -28,20 +30,23 @@ function App() {
 
   const getCurrentAccount = async () => {
     setIsLoading(true);
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts"});
+    await window.celo.enable()
+    const web3 = new Web3(window.celo)
+    kit = ContractKit.newKitFromWeb3(web3)
+    const accounts = await await kit.web3.eth.getAccounts();
     setCurrentAccount(accounts[0]);
     setIsLoading(false);
   }
 
   useEffect(() => {
-    if(window.ethereum && currentAccount){
+    if(window.celo && currentAccount){
       setChainId(window.ethereum.networkVersion);
       
-      window.ethereum.on("accountsChanged", (accounts) => {
+      window.celo.on("accountsChanged", (accounts) => {
         setCurrentAccount(accounts[0]);
       })
 
-      window.ethereum.on("chainChanged", (newChainId) => {
+      window.celo.on("chainChanged", (newChainId) => {
         setChainId(newChainId.substr(-1, 1));
       })
     }
@@ -60,25 +65,19 @@ function App() {
             >
                 <ModalOverlay />
                 <ModalContent>
-                  <ModalHeader>Metamask Not Installed!</ModalHeader>
+                  <ModalHeader>Celo Extension Wallet Not Installed!</ModalHeader>
                   <ModalBody>
-                      Please Install Metamask.
+                      Please Install Celo Extension Wallet.
                   </ModalBody>
                   <ModalFooter>
                       <Link 
-                          href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en" 
+                          href="https://chrome.google.com/webstore/detail/celoextensionwallet/kkilomkmpmkbdnfelcpgckmpcaemjcdh?hl=en" 
                           isExternal
                       >
                           <Button colorScheme="blue" mr={3} rightIcon={<FaExternalLinkAlt />}>
                               Install On Chrome 
                           </Button>
-                      </Link>
-                      <Link href="https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/" isExternal>
-                          <Button colorScheme="orange" rightIcon={<FaExternalLinkAlt />}>
-                              Install On Firefox 
-                          </Button>
-                      </Link>
-                      
+                      </Link>                      
                   </ModalFooter>
               </ModalContent>      
             </Modal>
@@ -93,17 +92,17 @@ function App() {
                 >
                   <ModalOverlay />
                   <ModalContent>
-                    <ModalHeader textAlign="center">Connect Wallet to continue</ModalHeader>
+                    <ModalHeader textAlign="center">Connect Celo Extension Wallet to continue</ModalHeader>
                     <ModalFooter justifyContent="center">
                         <Button className="connect" onClick={getCurrentAccount} isLoading={isLoading} colorScheme="yellow" mr={3}>
-                            Connect Wallet
+                            Connect Celo Extension Wallet
                         </Button>                      
                     </ModalFooter>
                   </ModalContent>
                   
                 </Modal>
                 :
-                chainId == "4" || chainId == undefined ?
+                chainId == "44787" || chainId == undefined ?
                 null
                 :
                 <Modal
@@ -115,7 +114,7 @@ function App() {
                   <ModalContent>
                     <ModalHeader>Network Not Supported</ModalHeader>
                     <ModalBody>
-                        Please Switch to Rinkeby Network.
+                        Please Switch to Alfajores Test Network.
                     </ModalBody>
                     <ModalFooter>                        
                     </ModalFooter>
