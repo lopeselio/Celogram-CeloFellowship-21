@@ -21,12 +21,12 @@ function Header({ currentAccount }) {
   const [ isMetamaskInstalled, setIsMetamaskInstalled ] = useState(false);
 
   useEffect(() => {
-    if(window.ethereum) {
+    if(window.celo) {
       setIsMetamaskInstalled(true);  
       let svg = svgAvatarGenerator(currentAccount, {dataUri: true});
       setAvatar(svg);
-    //   const web3 = new Web3(window.ethereum);
-    //   window.ethereum.on("chainChanged", async (chainId) => {
+    //   const web3 = new Web3(window.celo);
+    //   window.celo.on("chainChanged", async (chainId) => {
     //     const newChainId = await web3.eth.getChainId();
     //     chainIdSetter(newChainId);
     //   });
