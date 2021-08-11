@@ -24,7 +24,7 @@ import {
     SkeletonText,
   } from "@chakra-ui/react";
   import { TiPlus } from "react-icons/ti";
-  
+  import DisplayImage from './DisplayImage'
 
 class Upload extends Component {
       state = {currentImage:'https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png'}
@@ -42,18 +42,28 @@ class Upload extends Component {
       render() {
         const {currentImage} = this.state
         return(
-      
+          
           <VStack 
+          spacing={3}
+          // divider={<Divider borderColor="gray.200" />}
+          backgroundColor= "#2E3337"
+          width="100%"
+          align="stretch"
+          padding="20px"
+          borderBottomColor="#3CB371"
+          borderBottomWidth="4px"
+          > 
+            <VStack 
           spacing={3}
           // divider={<Divider borderColor="gray.200" />}
           width="100%"
           align="stretch"
-          backgroundColor="#1F1F23"
           padding="20px"
           borderBottomColor="#3CB371"
           borderBottomWidth="4px"
+          backgroundColor="#1F1F23"
           >
-            <Center h="100%" color="white">
+            <Center h="100%" color="white" backgroundColor="#1F1F23">
             <Heading as="h2">
                 Upload to CELOGram
             </Heading>
@@ -81,23 +91,7 @@ class Upload extends Component {
             >
               <HStack width="70%" spacing={3} alignItems="flex-start">
                 
-                {/* <VStack
-                      cursor="pointer"
-                      alignItems="flex-end"
-                      as="label"
-                      htmlFor="image-input"
-                      px="15px"
-                      width="15%"
-                      borderRadius="10px"
-                      height="50px"
-                      borderWidth="4px"
-                      borderStyle="solid"
-                      backgroundColor="#3CB371"
-                      borderColor="#FEE09D"
-                      textColor="#FEE09D"
-                      justifyContent="center"
-                    > */}
-                      {/* <VStack height="100%" width="100%" justifyContent="center" alignItems="flex-start"> */}
+                
                       <input
                 //   onChange={(e) => handleImage(e)}
                         name="image-upload"
@@ -108,13 +102,7 @@ class Upload extends Component {
                         onInput={this.props.captureFile} 
                         onChange={this.imageHandler}
                       />
-                        {/* <TiPlus style={{ fill: "#FEE09D" }} /> */}
-                        {/* <Text fontWeight="400" color="#FEE09D">
-                          Image
-                        </Text> */}
                         
-                      {/* </VStack> */}
-                {/* </VStack> */}
                   <Stack width="70%" backgroundColor="white" placeholder="Media Description" borderWidth="4px" borderColor="#FEE09D" textColor="#3CB371" >
                     <input
                         id="imageDescription"
@@ -126,16 +114,16 @@ class Upload extends Component {
                         placeholder="Enter Image Description"
                         required />
                 </Stack>
-                <Stack width="10%" backgroundColor="#3CB371" placeholder="Media Description" borderWidth="3px" borderColor="#FEE09D" textColor="#FEE09D" borderRadius="5px" ><button type="submit">Post</button></Stack>
+                <Stack width="10%" variant="ghost" backgroundColor="#3CB371" placeholder="Media Description" borderWidth="3px" borderColor="#FEE09D" textColor="#FEE09D" borderRadius="5px" ><button type="submit">Post</button></Stack>
 
             </HStack>
             
             </form>
-            
-
-            
-        </VStack>
-      // </Grid>
+            </VStack>
+            <DisplayImage />   
+          </VStack>
+          
+        
         )
       }
 
