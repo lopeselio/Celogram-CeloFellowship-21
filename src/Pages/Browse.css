@@ -1,4 +1,16 @@
- 
+body::-webkit-scrollbar {
+    width: 12px;               /* width of the entire scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: orange !important;        /* color of the tracking area */
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: blue !important;    /* color of the scroll thumb */
+    border-radius: 20px !important;       /* roundness of the scroll thumb */
+    border: 3px solid orange !important;  /* creates padding around scroll thumb */
+  }
 .MainSectionHome{
     display: flex;
     flex-direction: row;
