@@ -137,7 +137,7 @@ function ChatInterface({ currentAccount, isLocked, pubsubTopic }) {
     }
 
     return (
-        <VStack margin={0} spacing={4} height="calc(100vh - 65px)" backgroundColor="#2E3337" padding={3} alignItems="flex-start" width="20vw">
+        <VStack borderLeftWidth="4px" borderLeftColor="#FEE09D" margin={0} spacing={4} height="calc(100vh - 65px)"backgroundColor="#1F1F23" padding={3} alignItems="flex-start" width="20vw">
             <VStack alignItems="flex-start"  width="100%">
                 <Text fontSize="20px" color="#3CB371">Chat</Text>
                 <VStack width="100%" justifyContent="flex-end" height="calc(100vh - 65px - 23vh)">
