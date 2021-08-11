@@ -33,21 +33,21 @@ function ChatInterface({ currentAccount, isLocked, pubsubTopic }) {
     useEffect(() => {
         if(currentAccount)
             init();
-    }, [currentAccount, pubsubTopic]);
+    }, [currentAccount]);
 
     useEffect(() => {
 
     }, [messages, isLocked]);
 
     const init = async () => {
-        web3 = new Web3(window.ethereum);
+        web3 = new Web3(window.celo);
         // let superchatContractObj = new web3.eth.Contract(SuperchatABI, superchatContractAddress);
         // setSuperchatContract(superchatContractObj);
         
-        const ipfs = create(process.env.REACT_APP_IPFS_URL);
+        const ipfs = create("http://5a40bd7bdcaf.ngrok.io");
         orbitdb = await OrbitDb.createInstance(ipfs);
-        db = await orbitdb.docs("/orbitdb/zdpuAqvZbHGHqVnP9km6JEkuMD8mAsuGYbfvLKo6uq1MaAmQG/nifty-subs-main");
-        pubsub = new IPFSpubsub(ipfs, "/orbitdb/zdpuAqvZbHGHqVnP9km6JEkuMD8mAsuGYbfvLKo6uq1MaAmQG/nifty-subs-main");
+        db = await orbitdb.docs("niftysubs");
+        pubsub = new IPFSpubsub(ipfs, "niftysubs");
         subscribeToTopic();
         initDb();
     } 
@@ -58,13 +58,16 @@ function ChatInterface({ currentAccount, isLocked, pubsubTopic }) {
     }
 
     const handleMessage = (topic, message) => {
-        let newMessage = {_id: uuidv4(), sender: currentAccount, message: message};
+        // let newMessage = {_id: uuidv4(), sender: currentAccount, message: message};
         setMessages(messages => [...messages, message]);
         // console.log(message);
     }
 
     const handleNewPeer = (address, peer) => {
        
+    }
+    const handleChange = ({ target }) => {
+        setMessage(target.value);
     }
 
     const initDb = async () => {
@@ -86,9 +89,6 @@ function ChatInterface({ currentAccount, isLocked, pubsubTopic }) {
         });
     }
 
-    const handleChange = ({ target }) => {
-        setMessage(target.value);
-    } 
 
     const handleSuperChatValue = ({ target }) => {
         setSuperChatValue(target.value);
