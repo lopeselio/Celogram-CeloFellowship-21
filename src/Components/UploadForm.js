@@ -54,7 +54,7 @@ class Upload extends Component {
           borderBottomWidth="4px"
           >
             <Center h="100%" color="white">
-            <Heading as="h4" size="lg">
+            <Heading as="h2">
                 Upload to CELOGram
             </Heading>
             </Center>
