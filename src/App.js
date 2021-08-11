@@ -20,7 +20,11 @@ import Web3 from "web3";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Browse from './Pages/Browse';
 const ContractKit = require("@celo/contractkit")
+const { create } = require('ipfs-http-client')
 let kit
+const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
+
+
 
 function App() {
 
@@ -40,7 +44,7 @@ function App() {
 
   useEffect(() => {
     if(window.celo && currentAccount){
-      setChainId(window.ethereum.networkVersion);
+      setChainId(window.celo.networkVersion);
       
       window.celo.on("accountsChanged", (accounts) => {
         setCurrentAccount(accounts[0]);
@@ -52,12 +56,68 @@ function App() {
     }
   }, [currentAccount]);
 
+  const sortView = () => {
+    this.setState({
+      images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
+    })
+    this.setState({ loading: false})
+  }
+
+  const unsortView = () => {
+    this.setState({
+      images: this.state.images.reverse()})
+    this.setState({ loading: false})
+  }
+
+  const captureFile = event => {
+
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+
+    reader.onloadend = () => {
+      this.setState({ buffer: Buffer(reader.result) })
+      console.log('buffer', this.state.buffer)
+    }
+  }
+
+  const uploadImage = description => {
+    console.log("Submitting file to ipfs...")
+
+    ipfs.add(this.state.buffer, (error, result) => {
+      console.log('Ipfs result', result)
+      if(error) {
+        console.error(error)
+        return
+      }
+      this.setState({ loading: true })
+      this.state.Hashimage.methods.uploadImage(result[0].hash, description).send({ from: this.state.account }).on('transactionHash', (hash) => {
+        this.setState({ loading: false })
+      })
+    if (this.state.loading === false){
+      window.location.reload()
+    }
+    })
+  }
+
+  const tipImageOwner = (id, tipAmount) => {
+    this.setState({ loading: true })
+    this.state.Hashimage.methods.tipImageOwner(id).send({ from: this.state.account, value: tipAmount }).on('transactionHash', (hash) => {
+      this.setState({ loading: false })
+    })
+  }
+
+  const setselectedImg = (url) => {
+    this.setState({ selectedImg: url })
+  }
+
   return (
     <ChakraProvider theme={Theme}>
       <Router>
       <Header currentAccount={currentAccount} />
       {
-            window.ethereum == undefined ?
+            window.celo == undefined ?
             <Modal
               isOpen={true}
               isCentered={true}

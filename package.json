@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@celo/contractkit": "^1.1.0",
     "@chakra-ui/react": "^1.0.0",
     "@dicebear/avatars": "^4.7.1",
     "@dicebear/avatars-avataaars-sprites": "^4.7.1",
@@ -21,15 +22,14 @@
     "orbit-db-pubsub": "^0.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-icons": "^3.0.0",
+    "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "seed-color": "^2.0.1",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.2",
     "web3": "^1.5.0",
-    "web3modal": "^1.9.4",
-    "@celo/contractkit": "^1.1.0"
+    "web3modal": "^1.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
