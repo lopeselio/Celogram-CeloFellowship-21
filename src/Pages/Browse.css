@@ -1,21 +1,28 @@
-body::-webkit-scrollbar {
-    width: 12px;               /* width of the entire scrollbar */
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #3CB371  #FEE09D;
   }
   
-  body::-webkit-scrollbar-track {
-    background: orange !important;        /* color of the tracking area */
+  /* Works on Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
   }
   
-  body::-webkit-scrollbar-thumb {
-    background-color: blue !important;    /* color of the scroll thumb */
-    border-radius: 20px !important;       /* roundness of the scroll thumb */
-    border: 3px solid orange !important;  /* creates padding around scroll thumb */
+  *::-webkit-scrollbar-track {
+    background:  #FEE09D;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: #3CB371;
+    border-radius: 20px;
+    border: 3px solid  #FEE09D;
   }
 .MainSectionHome{
     display: flex;
     flex-direction: row;
     height: calc(100vh - 65px);
-    border-right: #3CB371 !important;
+    border-right: #FEE09D !important;
     border-right-width: 4px;
 }
 .sidepanel{
