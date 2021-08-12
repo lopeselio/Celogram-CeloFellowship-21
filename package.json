@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@celo/contractkit": "^1.1.0",
+    "@celo/contractkit": "^1.2.4",
+    "@celo/wallet-local": "^1.2.4",
     "@chakra-ui/react": "^1.0.0",
     "@dicebear/avatars": "^4.7.1",
     "@dicebear/avatars-avataaars-sprites": "^4.7.1",
@@ -12,6 +13,7 @@
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
     "@fontsource/inter": "^4.5.0",
+    "@openzeppelin/contracts": "^4.2.0",
     "@testing-library/jest-dom": "^5.9.0",
     "@testing-library/react": "^10.2.1",
     "@testing-library/user-event": "^12.0.2",
@@ -26,11 +28,11 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "seed-color": "^2.0.1",
+    "solc-0.8.1-fixed": "^0.8.1",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.2",
     "web3": "^1.5.0",
-    "web3modal": "^1.9.4",
-    "@openzeppelin/contracts": "^4.2.0"
+    "web3modal": "^1.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
