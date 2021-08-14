@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import Web3 from "web3";
 import {
     Center,
@@ -31,17 +31,21 @@ import {
   } from "@chakra-ui/react";
 import '../Pages/Browse.css'
 
-class DisplayImage extends Component {
-    state = {
-        tipAm: '2'
-    }
-    setTipAmount = (e) => {
-        this.setState({tipAm: e.target.value})
+function DisplayImage({ currentAccount }) {
+
+    const [tipAm, setTipAm] = useState('2')
+    // state = {
+    //     tipAm: '2'
+    // }
+    const setTipAmount = (e) => {
+        // this.setState({tipAm: e.target.value})
+        // const am = e.target.value
+        setTipAm(e.target.value)
     };
     
 
-    render() {
-        const {tipAm} = this.state
+    // render() {
+        // const {tipAm} = this.state
         const property = {
             imageUrl: "https://bit.ly/2Z4KKcF",
             imageAlt: "Rear view of modern home with pool",
@@ -66,7 +70,7 @@ class DisplayImage extends Component {
                 // borderBottomWidth="4px"
                 >
                 <Stack align="center" colorScheme="#FEE09D">
-                <Button className="rankButton" backgroundColor="#3cb371" size="md" variant="ghost" onClick={this.props.unsortView} >
+                <Button className="rankButton" backgroundColor="#3cb371" size="md" variant="ghost"  >
                     Rank Posts by &nbsp;<span className="CELO"> $CELO</span>
                 </Button>
                 </Stack>
@@ -83,7 +87,7 @@ class DisplayImage extends Component {
                         backgroundColor="FEE09D"
                         ml="2"
                     >
-                    Posted by {this.props.currentAccount} 0x123456
+                    Posted by 0x123456
                     </Box>
                     <Image borderRadius="lg" src={property.imageUrl} alt={property.imageAlt} />
 
@@ -123,7 +127,7 @@ class DisplayImage extends Component {
                         type="text"
                         style={{width:"100px"}} 
                         className="form-control"
-                        onChange={this.setTip}
+                        // onChange={this.setTip}
                         placeholder="cUSD Tip"
                         padding="5px"
                         required />
@@ -161,7 +165,7 @@ class DisplayImage extends Component {
                         backgroundColor="FEE09D"
                         ml="2"
                     >
-                    Posted by {this.props.currentAccount} 0x123456
+                    Posted by {currentAccount} 0x123456
                     </Box>
                     <Image borderRadius="lg" src={property.imageUrl} alt={property.imageAlt} />
 
@@ -175,7 +179,7 @@ class DisplayImage extends Component {
                             fontWeight="bold"
                             letterSpacing="wide"
                             fontSize="s"
-                            textTransform="uppercase"
+                            // textTransform="uppercase"
                             ml="2"
                             backgroundColor="#4d8a68"
                             borderRadius="5px"
@@ -201,7 +205,7 @@ class DisplayImage extends Component {
                         type="text"
                         style={{width:"100px"}} 
                         className="form-control"
-                        onChange={this.setTip}
+                        // onChange={this.setTip}
                         placeholder="cUSD Tip"
                         padding="5px"
                         required />
@@ -231,7 +235,7 @@ class DisplayImage extends Component {
 
             </VStack>
         )
-    }
+    // }
 
 
 }
