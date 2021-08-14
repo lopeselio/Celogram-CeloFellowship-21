@@ -207,7 +207,9 @@ export default function Browse({ currentAccount }) {
           height="100%"
           className="mainsection"
         >
-          <Upload />
+          <Upload
+            currentAccount={currentAccount}
+          />
         </HStack>
           
         <HStack> 
