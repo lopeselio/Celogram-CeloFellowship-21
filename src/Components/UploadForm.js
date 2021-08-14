@@ -26,21 +26,53 @@ import {
   import { TiPlus } from "react-icons/ti";
   import DisplayImage from './DisplayImage'
 
-class Upload extends Component {
-      state = {currentImage:'https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png'}
+// class Upload extends Component {
+function Upload({ currentAccount }) {
+      // state = {currentImage:'https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png'}
+      const [currentImage, setCurrentImage] = useState('https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png')
+      const [Buffer, setBuffer] = useState(undefined);
+      
+      // captureFile = event => {
 
-      imageHandler = (e) => {
+      //   event.preventDefault()
+      //   const file = event.target.files[0]
+      //   const reader = new window.FileReader()
+      //   reader.readAsArrayBuffer(file)
+    
+      //   reader.onloadend = () => {
+      //     this.setState({ buffer: Buffer(reader.result) })
+      //     console.log('buffer', this.state.buffer)
+      //   }
+      // }
+      const captureFile = (event) => {
+
+        event.preventDefault()
+        const file = event.target.files[0]
+        const reader = new window.FileReader()
+        reader.readAsArrayBuffer(file)
+    
+        reader.onloadend = () => {
+          const buffer = Buffer(reader.result)
+          setBuffer(buffer)
+          // this.setState({ buffer: Buffer(reader.result) })
+          console.log('buffer', Buffer)
+        }
+      }
+
+      const imageHandler = (e) => {
         const reader = new FileReader();
         reader.onload = () => {
           if(reader.readyState === 2){
-            this.setState({Img: reader.result})
+            // this.setState({Img: reader.result})
+            setCurrentImage(reader.result)
           }
         }
         reader.readAsDataURL(e.target.files[0])
     
       };
-      render() {
-        const {currentImage} = this.state
+      // render() {
+        // const {currentImage} = this.state
+        // const {currentAccount} = this.props.currentAccount
         return(
           
           <VStack 
@@ -87,7 +119,8 @@ class Upload extends Component {
               onSubmit={(event) => {
               event.preventDefault()
               const description = this.imageDescription.value
-              this.props.uploadImage(description)}}
+              this.props.uploadImage(description)
+            }}
             >
               <HStack width="70%" spacing={3} alignItems="flex-start">
                 
@@ -99,17 +132,18 @@ class Upload extends Component {
                         style={{ color: 'white', background: '#3CB371' }}
                         id="input"
                         accept=".jpg, .jpeg, .png, .bmp, .gif"
-                        onInput={this.props.captureFile} 
-                        onChange={this.imageHandler}
+                        onInput={() => captureFile()} 
+                        onChange={() => imageHandler()}
                       />
                         
                   <Stack width="70%" backgroundColor="white" placeholder="Media Description" borderWidth="4px" borderColor="#FEE09D" textColor="#3CB371" >
                     <input
                         id="imageDescription"
+                        name="imageDescription"
                         type="text"
                         // style={{ display: "none" }}
                         style={{ border: "none" }}
-                        ref={(input) => { this.imageDescription = input }}
+                        // ref={(input) => { this.imageDescription = input }}
                         className="form-control"
                         placeholder="Enter Image Description"
                         required />
@@ -120,12 +154,12 @@ class Upload extends Component {
             
             </form>
             </VStack>
-            <DisplayImage />   
+            <DisplayImage currentAccount={currentAccount} />   
           </VStack>
           
         
         )
-      }
+      // }
 
   }
 
