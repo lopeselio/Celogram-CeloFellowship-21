@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import FundPostABI from './abis/FundPost.json'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { 
   ChakraProvider,
@@ -22,8 +23,13 @@ import Browse from './Pages/Browse';
 const ContractKit = require("@celo/contractkit")
 const { create } = require('ipfs-http-client')
 let kit
-const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
-
+// const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
+// const { ipfsClient } = require("ipfs-http-client");
+const ipfs = create({
+  host: "ipfs.infura.io",
+  port: 5001,
+  protocol: "https",
+});
 
 
 function App() {
@@ -31,6 +37,11 @@ function App() {
   const [currentAccount, setCurrentAccount] = useState(undefined);
   const [ chainId, setChainId ] = useState();
   const [ isLoading, setIsLoading ] = useState(false);
+  const [FundPost, setFundPost] = useState(null);
+  const [selectedImg, setSelectedImg] = useState(null);
+  // const [openModal, setOpenModal] = useState(false);
+  const [images, setImages] = useState([]);
+  const [Buffer, setBuffer] = useState(undefined);
 
   const getCurrentAccount = async () => {
     setIsLoading(true);
@@ -45,6 +56,7 @@ function App() {
   useEffect(() => {
     if(window.celo && currentAccount){
       setChainId(window.celo.networkVersion);
+      init();
       
       window.celo.on("accountsChanged", (accounts) => {
         setCurrentAccount(accounts[0]);
@@ -56,17 +68,47 @@ function App() {
     }
   }, [currentAccount]);
 
+  const init = async () => {
+    const web3 = new Web3(window.celo);
+    kit = ContractKit.newKitFromWeb3(web3);
+    const networkId = await kit.web3.eth.net.getId();
+    const networkData = FundPostABI.networks[networkId];
+    let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+    setFundPost(FundPostContractObj);
+    // const ipfs = create({
+    //   host: "ipfs.infura.io",
+    //   port: 5001,
+    //   protocol: "https",
+    // });
+    // const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
+    
+    // const ipfs = create("http://localhost:5001/");
+    // orbitdb = await OrbitDb.createInstance(ipfs);
+    // db = await orbitdb.docs("niftysubs");
+    // pubsub = new IPFSpubsub(ipfs, "niftysubs");
+    // subscribeToTopic();
+    // initDb();
+}
+
   const sortView = () => {
-    this.setState({
-      images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
+    // this.setState({
+    //   images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
+    // })
+    const sorted = [...images].sort((a,b) => {
+      return b.tipAmount - a.tipAmount
     })
-    this.setState({ loading: false})
+    setImages(sorted)
+    // this.setState({ loading: false})
+    setIsLoading(false)
   }
 
   const unsortView = () => {
-    this.setState({
-      images: this.state.images.reverse()})
-    this.setState({ loading: false})
+    // this.setState({
+    //   images: this.state.images.reverse()})
+    const sortedReverse = [...images].reverse();
+    setImages(sortedReverse)
+    // this.setState({ loading: false})
+    setIsLoading(false)
   }
 
   const captureFile = event => {
@@ -77,39 +119,72 @@ function App() {
     reader.readAsArrayBuffer(file)
 
     reader.onloadend = () => {
-      this.setState({ buffer: Buffer(reader.result) })
-      console.log('buffer', this.state.buffer)
+      const buffer = Buffer(reader.result)
+      setBuffer(buffer)
+      // this.setState({ buffer: Buffer(reader.result) })
+      console.log('buffer', Buffer)
     }
   }
 
-  const uploadImage = description => {
-    console.log("Submitting file to ipfs...")
+  const uploadImage = (description) => {
+    if (currentAccount !== undefined) {
+      console.log("Submitting file to ipfs...");
 
-    ipfs.add(this.state.buffer, (error, result) => {
-      console.log('Ipfs result', result)
-      if(error) {
-        console.error(error)
-        return
-      }
-      this.setState({ loading: true })
-      this.state.Hashimage.methods.uploadImage(result[0].hash, description).send({ from: this.state.account }).on('transactionHash', (hash) => {
-        this.setState({ loading: false })
-      })
-    if (this.state.loading === false){
-      window.location.reload()
+      // ipfs.add(this.state.buffer, (error, result) => {
+      //   console.log("Ipfs result", result);
+      //   if (error) {
+      //     console.error(error);
+      //     return;
+      //   }
+      //   // this.setState({ loading: true });
+      //   setIsLoading(true);
+      //   this.state.FundPost.methods
+      //     .uploadImage(result[0].hash, description)
+      //     .send({ from: currentAccount })
+      //     .on("transactionHash", (hash) => {
+      //       // this.setState({ isLoading: false });
+      //       // setIsLoading(false)
+      //     });
+      //   if (this.state.loading === false) {
+      //     window.location.reload();
+      //   }
+      // });
+      ipfs.add(Buffer, (error, result) => {
+        console.log("Ipfs result", result);
+        if (error) {
+          console.error(error);
+          return;
+        }
+        // this.setState({ loading: true });
+        setIsLoading(true);
+        FundPost.methods
+          .uploadImage(result[0].hash, description)
+          .send({ from: currentAccount })
+          .on("transactionHash", (hash) => {
+            // this.setState({ isLoading: false });
+            setIsLoading(false)
+          });
+        if (isLoading) {
+          window.location.reload();
+        }
+      });
+    } else {
+      window.alert("Please connect your Celo Wallet to upload!");
     }
-    })
-  }
+  };
 
   const tipImageOwner = (id, tipAmount) => {
-    this.setState({ loading: true })
-    this.state.Hashimage.methods.tipImageOwner(id).send({ from: this.state.account, value: tipAmount }).on('transactionHash', (hash) => {
-      this.setState({ loading: false })
+    // this.setState({ loading: true })
+    setIsLoading(true)
+    FundPost.methods.tipImageOwner(id).send({ from: currentAccount, value: tipAmount }).on('transactionHash', (hash) => {
+      // this.setState({ loading: false })
+      setIsLoading(false)
     })
   }
 
   const setselectedImg = (url) => {
-    this.setState({ selectedImg: url })
+    setSelectedImg(url)
+    // this.setState({ selectedImg: url })
   }
 
   return (
@@ -191,7 +266,10 @@ function App() {
               <Dashboard currentAccount={currentAccount} />
             </Route> */}
             <Route exact path="/">
-              <Browse />
+              <Browse
+                currentAccount={currentAccount}
+                
+              />
             </Route>
           </Switch>
       </Router>
