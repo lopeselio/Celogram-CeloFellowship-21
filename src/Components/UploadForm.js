@@ -1,37 +1,39 @@
-import React, { useState, useEffect, useContext, Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import Web3 from "web3";
+
 import {
     Center,
-    Grid,
     VStack,
     Heading,
-    InputGroup,
-    FormControl,
     HStack,
     Image,
-    Skeleton,
-    Spinner,
     Box,
-    // StackDivider,
     Stack,
-    Text,
-    Divider,
-    Button,
-    FormLabel,
-    Input,
-    FormHelperText,
-    Textarea,
-    InputRightAddon,
-    SkeletonText,
   } from "@chakra-ui/react";
   import { TiPlus } from "react-icons/ti";
+  import FundPostABI from '../abis/FundPost.json'
+   
   import DisplayImage from './DisplayImage'
+  const { create } = require('ipfs-http-client')
+  const ipfs = create({
+    host: "ipfs.infura.io",
+    port: 5001,
+    protocol: "https",
+  });
+  
+  const ContractKit = require("@celo/contractkit") 
+  let kit
+
+ 
 
 // class Upload extends Component {
 function Upload({ currentAccount }) {
       // state = {currentImage:'https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png'}
       const [currentImage, setCurrentImage] = useState('https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png')
-      const [Buffer, setBuffer] = useState(undefined);
-      
+      const [Bbuffer, setBuffer] = useState(undefined);
+      const [ isLoading, setIsLoading ] = useState(false);
+      const [FundPost, setFundPost] = useState(null);
+      const [Desc, setDesc] = useState('')
       // captureFile = event => {
 
       //   event.preventDefault()
@@ -41,9 +43,41 @@ function Upload({ currentAccount }) {
     
       //   reader.onloadend = () => {
       //     this.setState({ buffer: Buffer(reader.result) })
-      //     console.log('buffer', this.state.buffer)
+      //     
       //   }
       // }
+
+      useEffect(() => {
+        if(window.celo && currentAccount){
+          init();
+        }
+      }, [currentAccount]);
+
+      const init = async () => {
+        const web3 = new Web3(window.celo);
+        kit = ContractKit.newKitFromWeb3(web3);
+        const networkId = await kit.web3.eth.net.getId();
+        const networkData = FundPostABI.networks[networkId];
+        let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+        setFundPost(FundPostContractObj);
+        // const ipfs = create({
+        //   host: "ipfs.infura.io",
+        //   port: 5001,
+        //   protocol: "https",
+        // });        
+        // const ipfs = create("http://localhost:5001/");
+        // orbitdb = await OrbitDb.createInstance(ipfs);
+        // db = await orbitdb.docs("niftysubs");
+        // pubsub = new IPFSpubsub(ipfs, "niftysubs");
+        // subscribeToTopic();
+        // initDb();
+    }
+
+      const handleDesc = (event) => {
+        event.preventDefault()
+        setDesc(event.target.value)
+      }
+
       const captureFile = (event) => {
 
         event.preventDefault()
@@ -52,10 +86,11 @@ function Upload({ currentAccount }) {
         reader.readAsArrayBuffer(file)
     
         reader.onloadend = () => {
+          
           const buffer = Buffer(reader.result)
           setBuffer(buffer)
           // this.setState({ buffer: Buffer(reader.result) })
-          console.log('buffer', Buffer)
+          console.log('buffer', Bbuffer)
         }
       }
 
@@ -69,6 +104,34 @@ function Upload({ currentAccount }) {
         }
         reader.readAsDataURL(e.target.files[0])
     
+      };
+      const uploadImage = (description) => {
+        if (currentAccount !== undefined) {
+          console.log("Submitting file to ipfs...");
+          console.log(description)
+    
+          ipfs.add(Bbuffer, (error, result) => {
+            console.log("Ipfs result", result);
+            if (error) {
+              console.error(error);
+              return;
+            }
+            // this.setState({ loading: true });
+            setIsLoading(true);
+            FundPost.methods
+              .uploadImage(result[0].hash, description)
+              .send({ from: currentAccount })
+              .on("transactionHash", (hash) => {
+                // this.setState({ isLoading: false });
+                setIsLoading(false)
+              });
+            if (isLoading) {
+              window.location.reload();
+            }
+          });
+        } else {
+          window.alert("Please connect your Celo Wallet to upload!");
+        }
       };
       // render() {
         // const {currentImage} = this.state
@@ -118,22 +181,21 @@ function Upload({ currentAccount }) {
             <form style={{ width: "100%" }}
               onSubmit={(event) => {
               event.preventDefault()
-              const description = this.imageDescription.value
-              this.props.uploadImage(description)
+              const description = {Desc}
+              uploadImage(description)
             }}
             >
               <HStack width="70%" spacing={3} alignItems="flex-start">
                 
                 
                       <input
-                //   onChange={(e) => handleImage(e)}
                         name="image-upload"
                         type="file"
                         style={{ color: 'white', background: '#3CB371' }}
                         id="input"
                         accept=".jpg, .jpeg, .png, .bmp, .gif"
-                        onInput={() => captureFile()} 
-                        onChange={() => imageHandler()}
+                        onInput={(event) => captureFile(event)} 
+                        onChange={(e) => imageHandler(e)}
                       />
                         
                   <Stack width="70%" backgroundColor="white" placeholder="Media Description" borderWidth="4px" borderColor="#FEE09D" textColor="#3CB371" >
@@ -143,7 +205,9 @@ function Upload({ currentAccount }) {
                         type="text"
                         // style={{ display: "none" }}
                         style={{ border: "none" }}
-                        // ref={(input) => { this.imageDescription = input }}
+                        // ref={(input) => { imageDescription = input }}
+                        value={Desc}
+                        onChange={(event) => handleDesc(event)}
                         className="form-control"
                         placeholder="Enter Image Description"
                         required />
