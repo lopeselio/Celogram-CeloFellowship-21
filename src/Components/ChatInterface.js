@@ -1,4 +1,4 @@
-import { VStack, Input, HStack, Text, Button, Spacer, Box, Tag, Avatar, Flex, Image, useToast, FormControl, Form } from "@chakra-ui/react";
+import { VStack, Input, HStack, Text, Button, Box, Tag, Avatar, Flex, Image, useToast, FormControl, Form } from "@chakra-ui/react";
 import seedColor from "seed-color";
 import OrbitDb, { Identities } from "orbit-db";
 import { create } from "ipfs-http-client";
@@ -44,12 +44,12 @@ function ChatInterface({ currentAccount, isLocked, pubsubTopic }) {
         // let superchatContractObj = new web3.eth.Contract(SuperchatABI, superchatContractAddress);
         // setSuperchatContract(superchatContractObj);
         
-        const ipfs = create("http://5a40bd7bdcaf.ngrok.io");
-        orbitdb = await OrbitDb.createInstance(ipfs);
-        db = await orbitdb.docs("niftysubs");
-        pubsub = new IPFSpubsub(ipfs, "niftysubs");
-        subscribeToTopic();
-        initDb();
+        // const ipfs = create("http://5a40bd7bdcaf.ngrok.io");
+        // orbitdb = await OrbitDb.createInstance(ipfs);
+        // db = await orbitdb.docs("niftysubs");
+        // pubsub = new IPFSpubsub(ipfs, "niftysubs");
+        // subscribeToTopic();
+        // initDb();
     } 
 
     const subscribeToTopic = async () => {
