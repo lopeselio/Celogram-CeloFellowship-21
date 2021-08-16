@@ -3,7 +3,6 @@ import celogram from '../assets/celo.svg';
 import { 
   Button, 
   HStack, 
-  Text, 
   Tag, 
   TagLabel, 
   Avatar,
