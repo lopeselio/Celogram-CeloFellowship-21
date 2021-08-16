@@ -21,6 +21,10 @@ const ContractKit = require("@celo/contractkit")
 let kit
 // FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
 var FundPostContractObj
+// const ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
+const ipfsClient = require('ipfs-http-client')
+const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
+
 
 
 function DisplayImage({ currentAccount }) {
@@ -55,6 +59,7 @@ function DisplayImage({ currentAccount }) {
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
         const networkData = FundPostABI.networks[networkId];
+        console.log(networkData, networkId)
         if(networkData)
         {
         FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
@@ -64,7 +69,10 @@ function DisplayImage({ currentAccount }) {
         for(var i = 1; i <= imagesCount; i++){
             const image = await FundPostContractObj.methods.images(i).call()
             setImages([...images, image])
-        }}
+            console.log(images)
+        }
+    return images
+    }
         }else {
             window.alert('Contract not deployed to Alfajores TestNetwork')
         }
@@ -237,62 +245,7 @@ function DisplayImage({ currentAccount }) {
                             </Center>
 
                     })}
-                    <Center>
-                <Box width="800px" padding="8px" maxW="lg" borderWidth="4px" borderRadius="lg" borderColor="#FEE09D" overflow="hidden" backgroundColor="#3cb371">
-                    <Box
-                        color="gray.500"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        padding="5px"
-                        backgroundColor="FEE09D"
-                        ml="2"
-                    >
                     
-                        <Skeleton startColor="#FEE09D" endColor="yellow.200" height="20px" />
-
-                        
-                        {/* <Skeleton startColor="#FEE09D" endColor="yellow.200" height="20px" /> */}
-                    <br />
-                    
-
-                    </Box>
-                    <Skeleton startColor="#4d8a68" endColor="teal" height="300px" />
-                    <br />
-                    
-                        
-                        <Skeleton startColor="#FEE09D" endColor="yellow.200" height="20px" />
-
-                        {/* <Skeleton startColor="#FEE09D" endColor="yellow.200" height="40px" /> */}
-
-                        
-                    <HStack>
-                    <Skeleton startColor="teal" endColor="yellow.200" width="20px" />
-                    
-                    
-                    {/* <Stack width="20%" variant="ghost" backgroundColor="#FEE09D" placeholder="Media Description" borderWidth="3px" borderColor="#4d8a68" textColor="#3CB371" borderRadius="5px" ><button type="submit">TIP cUSD</button></Stack> */}
-                    </HStack>
-
-                       
-
-                       {/*<Box d="flex" mt="2" alignItems="center">
-                         {Array(5)
-                            .fill("")
-                            .map((_, i) => (
-                            <StarIcon
-                                key={i}
-                                color={i < property.rating ? "teal.500" : "gray.300"}
-                            />
-                            ))}
-                        <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                            {property.reviewCount} reviews
-                        </Box>
-                        </Box>
-                   {/* </Box> */}
-                    </Box>
-                    </Center>
-                <div>Hey There</div>
 
                     
                     </VStack>
