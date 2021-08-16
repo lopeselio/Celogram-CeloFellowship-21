@@ -19,7 +19,8 @@ import svgAvatarGenerator from "../utils/avatar";
 import FundPostABI from '../abis/FundPost.json'
 const ContractKit = require("@celo/contractkit")
 let kit
-
+// FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+var FundPostContractObj
 
 
 function DisplayImage({ currentAccount }) {
@@ -30,8 +31,8 @@ function DisplayImage({ currentAccount }) {
     const [selectedImg, setSelectedImg] = useState(null);
     const [images, setImages] = useState([]);
     const [ isLoading, setIsLoading ] = useState(false);
-    const [FundPost, setFundPost] = useState(null);
-
+    // const [FundPost, setFundPost] = useState(null);
+    // const [count, setCount] = useState(0)
 
     
     useEffect(() => {
@@ -54,25 +55,40 @@ function DisplayImage({ currentAccount }) {
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
         const networkData = FundPostABI.networks[networkId];
-        let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
-        setFundPost(FundPostContractObj);
-        // const ipfs = create({
-        //   host: "ipfs.infura.io",
-        //   port: 5001,
-        //   protocol: "https",
-        // });
-        // const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
-        
-        // const ipfs = create("http://localhost:5001/");
-        // orbitdb = await OrbitDb.createInstance(ipfs);
-        // db = await orbitdb.docs("niftysubs");
-        // pubsub = new IPFSpubsub(ipfs, "niftysubs");
-        // subscribeToTopic();
-        // initDb();
+        if(networkData)
+        {
+        FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+        // setFundPost(FundPostContractObj);
+        if(FundPostContractObj){
+        const imagesCount = await FundPostContractObj.methods.imageCount().call()     
+        for(var i = 1; i <= imagesCount; i++){
+            const image = await FundPostContractObj.methods.images(i).call()
+            setImages([...images, image])
+        }}
+        }else {
+            window.alert('Contract not deployed to Alfajores TestNetwork')
+        }
     }
-    // state = {
-    //     tipAm: '2'
-    // }
+    const sortView = () => {
+        // this.setState({
+    
+        // })
+        const sorted = [...images].sort((a,b) => {
+          return b.tipAmount - a.tipAmount
+        })
+        setImages(sorted)
+        // this.setState({ loading: false})
+        setIsLoading(false)
+    }
+    
+    const unsortView = () => {
+        // this.setState({
+        const sortedReverse = [...images].reverse();
+        setImages(sortedReverse)
+        // this.setState({ loading: false})
+        setIsLoading(false)
+    }
+    
     const setTipAmount = (e) => {
         // this.setState({tipAm: e.target.value})
         // const am = e.target.value
@@ -81,14 +97,14 @@ function DisplayImage({ currentAccount }) {
     const tipImageOwner = (id, tipAmount) => {
         // this.setState({ loading: true })
         setIsLoading(true)
-        FundPost.methods.tipImageOwner(id).send({ from: currentAccount, value: tipAmount }).on('transactionHash', (hash) => {
+        FundPostContractObj.methods.tipImageOwner(id).send({ from: currentAccount, value: tipAmount }).on('transactionHash', (hash) => {
           // this.setState({ loading: false })
           setIsLoading(false)
         })
     }
 
     useEffect(() => {
-        if(window.celo){
+        if(window.celo && currentAccount){
             setIsMetamaskInstalled(true); 
             let svg = svgAvatarGenerator(currentAccount, {dataUri: true});
             setAvatar(svg);
