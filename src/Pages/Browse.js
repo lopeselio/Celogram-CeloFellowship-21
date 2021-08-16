@@ -27,22 +27,22 @@ import { useParams } from 'react-router-dom'
 // import { getClient, queryThread } from '../utils/textile'
 // import { Where } from '@textile/hub-threads-client'
 import svgAvatarGenerator from '../utils/avatar'
-import OrbitDB from "orbit-db";
+// import OrbitDB from "orbit-db";
 import Upload from "../Components/UploadForm"
 
 var sf
 var LockContract
 var web3
 
-const ipfsOptions = {
-  EXPERIMENTAL: {
-    pubsub: true
-  },
-  repo: './ipfs'
-}
+// const ipfsOptions = {
+//   EXPERIMENTAL: {
+//     pubsub: true
+//   },
+//   repo: './ipfs'
+// }
 
 // http://5a40bd7bdcaf.ngrok.io
-const ipfs = create("http://5a40bd7bdcaf.ngrok.io", ipfsOptions);
+// const ipfs = create("http://5a40bd7bdcaf.ngrok.io", ipfsOptions);
 
 
 // const ACTIONS = {
@@ -70,7 +70,7 @@ const ipfs = create("http://5a40bd7bdcaf.ngrok.io", ipfsOptions);
 //   }
 // }
 
-export default function Browse({ currentAccount, captureFile }) {
+export default function Browse({ currentAccount }) {
   // const [isStartingFlow, setIsStartingFlow] = useState(false)
   const [isPageLoading, setIsPageLoading] = useState(true)
   const [ avatar, setAvatar ] = useState(undefined);
@@ -94,7 +94,7 @@ export default function Browse({ currentAccount, captureFile }) {
     //   body.appendChild(tag);
     // }
 
-    let svg = svgAvatarGenerator("0x22b2DD2CFEF2018D15543c484aceF6D9B5435863", {dataUri: true});
+    let svg = svgAvatarGenerator(currentAccount, {dataUri: true});
     setAvatar(svg);
 
     
@@ -209,7 +209,6 @@ export default function Browse({ currentAccount, captureFile }) {
         >
           <Upload
             currentAccount={currentAccount}
-            captureFile={captureFile}
           />
         </HStack>
           

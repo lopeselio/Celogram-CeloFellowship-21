@@ -14,16 +14,14 @@ import {
   import FundPostABI from '../abis/FundPost.json'
    
   import DisplayImage from './DisplayImage'
-  const { create } = require('ipfs-http-client')
-  const ipfs = create({
-    host: "ipfs.infura.io",
-    port: 5001,
-    protocol: "https",
-  });
+  
+
   
   const ContractKit = require("@celo/contractkit") 
   let kit
-
+  const ipfsClient = require('ipfs-http-client')
+  const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
+  var FundPostContractObj
  
 
 // class Upload extends Component {
@@ -32,7 +30,7 @@ function Upload({ currentAccount }) {
       const [currentImage, setCurrentImage] = useState('https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png')
       const [Bbuffer, setBuffer] = useState(undefined);
       const [ isLoading, setIsLoading ] = useState(false);
-      const [FundPost, setFundPost] = useState(null);
+      // const [FundPost, setFundPost] = useState(null);
       const [Desc, setDesc] = useState('')
       // captureFile = event => {
 
@@ -47,6 +45,7 @@ function Upload({ currentAccount }) {
       //   }
       // }
 
+
       useEffect(() => {
         if(window.celo && currentAccount){
           init();
@@ -58,13 +57,12 @@ function Upload({ currentAccount }) {
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
         const networkData = FundPostABI.networks[networkId];
-        let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
-        setFundPost(FundPostContractObj);
-        // const ipfs = create({
-        //   host: "ipfs.infura.io",
-        //   port: 5001,
-        //   protocol: "https",
-        // });        
+        FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+        console.log(FundPostContractObj)
+        // ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
+
+        // setFundPost(FundPostContractObj);
+               
         // const ipfs = create("http://localhost:5001/");
         // orbitdb = await OrbitDb.createInstance(ipfs);
         // db = await orbitdb.docs("niftysubs");
@@ -118,7 +116,7 @@ function Upload({ currentAccount }) {
             }
             // this.setState({ loading: true });
             setIsLoading(true);
-            FundPost.methods
+            FundPostContractObj.methods
               .uploadImage(result[0].hash, description)
               .send({ from: currentAccount })
               .on("transactionHash", (hash) => {
@@ -182,6 +180,7 @@ function Upload({ currentAccount }) {
               onSubmit={(event) => {
               event.preventDefault()
               const description = {Desc}
+              console.log(description)
               uploadImage(description)
             }}
             >
