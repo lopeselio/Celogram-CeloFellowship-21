@@ -70,7 +70,7 @@ const ipfs = create("http://5a40bd7bdcaf.ngrok.io", ipfsOptions);
 //   }
 // }
 
-export default function Browse({ currentAccount }) {
+export default function Browse({ currentAccount, captureFile }) {
   // const [isStartingFlow, setIsStartingFlow] = useState(false)
   const [isPageLoading, setIsPageLoading] = useState(true)
   const [ avatar, setAvatar ] = useState(undefined);
@@ -101,14 +101,14 @@ export default function Browse({ currentAccount }) {
 
     // loadScript("https://niftysubs.github.io/fundraising-widget/main.js");
 
-    const orbitdb = await OrbitDB.createInstance(ipfs);
-    let db = await orbitdb.docs("/orbitdb/zdpuAz6e2rGQ917hroubfJuazTQDTHdvDPhm7QhKkMiu64SD7/videosdb");
-    await db.load();
-    setdb(db);
-    let transmission = await db.query((docs) => docs._id == id);
-    console.log(transmission);
-    setTopic(transmission[0].pubsubTopic);
-    setLockAddress(transmission[0].lockAddress);
+    // const orbitdb = await OrbitDB.createInstance(ipfs);
+    // let db = await orbitdb.docs("/orbitdb/zdpuAz6e2rGQ917hroubfJuazTQDTHdvDPhm7QhKkMiu64SD7/videosdb");
+    // await db.load();
+    // setdb(db);
+    // let transmission = await db.query((docs) => docs._id == id);
+    // console.log(transmission);
+    // setTopic(transmission[0].pubsubTopic);
+    // setLockAddress(transmission[0].lockAddress);
   }, []);
 
   useEffect(() => {
@@ -209,6 +209,7 @@ export default function Browse({ currentAccount }) {
         >
           <Upload
             currentAccount={currentAccount}
+            captureFile={captureFile}
           />
         </HStack>
           
