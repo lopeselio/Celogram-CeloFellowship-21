@@ -92,7 +92,7 @@ function App() {
 
   const sortView = () => {
     // this.setState({
-    //   images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
+
     // })
     const sorted = [...images].sort((a,b) => {
       return b.tipAmount - a.tipAmount
@@ -104,7 +104,6 @@ function App() {
 
   const unsortView = () => {
     // this.setState({
-    //   images: this.state.images.reverse()})
     const sortedReverse = [...images].reverse();
     setImages(sortedReverse)
     // this.setState({ loading: false})
@@ -129,26 +128,6 @@ function App() {
   const uploadImage = (description) => {
     if (currentAccount !== undefined) {
       console.log("Submitting file to ipfs...");
-
-      // ipfs.add(this.state.buffer, (error, result) => {
-      //   console.log("Ipfs result", result);
-      //   if (error) {
-      //     console.error(error);
-      //     return;
-      //   }
-      //   // this.setState({ loading: true });
-      //   setIsLoading(true);
-      //   this.state.FundPost.methods
-      //     .uploadImage(result[0].hash, description)
-      //     .send({ from: currentAccount })
-      //     .on("transactionHash", (hash) => {
-      //       // this.setState({ isLoading: false });
-      //       // setIsLoading(false)
-      //     });
-      //   if (this.state.loading === false) {
-      //     window.location.reload();
-      //   }
-      // });
       ipfs.add(Buffer, (error, result) => {
         console.log("Ipfs result", result);
         if (error) {
@@ -259,15 +238,17 @@ function App() {
             </>
           }
           <Switch>
-            {/* <Route exact path="/NFT"> */}
-              {/* <HomeScreen currentAccount={currentAccount} /> */}
-            {/* </Route> */}
-            {/* <Route exact path="/dashboard">
-              <Dashboard currentAccount={currentAccount} />
-            </Route> */}
             <Route exact path="/">
               <Browse
                 currentAccount={currentAccount}
+                captureFile={captureFile}
+                uploadImage={uploadImage}
+                images={images}
+                tipImageOwner={tipImageOwner}
+                setselectedImg={setselectedImg}
+                selectedImg={selectedImg}
+                unsortView={unsortView}
+                sortView={sortView}
                 
               />
             </Route>
