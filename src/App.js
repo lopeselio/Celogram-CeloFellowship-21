@@ -21,15 +21,10 @@ import Web3 from "web3";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Browse from './Pages/Browse';
 const ContractKit = require("@celo/contractkit")
-const { create } = require('ipfs-http-client')
+// const { create } = require('ipfs-http-client')
 let kit
-// const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
-// const { ipfsClient } = require("ipfs-http-client");
-const ipfs = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-});
+const ipfsClient = require('ipfs-http-client')
+const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
 
 
 function App() {
@@ -39,7 +34,6 @@ function App() {
   const [ isLoading, setIsLoading ] = useState(false);
   const [FundPost, setFundPost] = useState(null);
   const [selectedImg, setSelectedImg] = useState(null);
-  // const [openModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [Buffer, setBuffer] = useState(undefined);
 
@@ -75,19 +69,6 @@ function App() {
     const networkData = FundPostABI.networks[networkId];
     let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
     setFundPost(FundPostContractObj);
-    // const ipfs = create({
-    //   host: "ipfs.infura.io",
-    //   port: 5001,
-    //   protocol: "https",
-    // });
-    // const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
-    
-    // const ipfs = create("http://localhost:5001/");
-    // orbitdb = await OrbitDb.createInstance(ipfs);
-    // db = await orbitdb.docs("niftysubs");
-    // pubsub = new IPFSpubsub(ipfs, "niftysubs");
-    // subscribeToTopic();
-    // initDb();
 }
 
   const sortView = () => {
@@ -153,17 +134,16 @@ function App() {
   };
 
   const tipImageOwner = (id, tipAmount) => {
-    // this.setState({ loading: true })
+    
     setIsLoading(true)
     FundPost.methods.tipImageOwner(id).send({ from: currentAccount, value: tipAmount }).on('transactionHash', (hash) => {
-      // this.setState({ loading: false })
+      
       setIsLoading(false)
     })
   }
 
   const setselectedImg = (url) => {
     setSelectedImg(url)
-    // this.setState({ selectedImg: url })
   }
 
   return (
@@ -241,14 +221,14 @@ function App() {
             <Route exact path="/">
               <Browse
                 currentAccount={currentAccount}
-                captureFile={captureFile}
-                uploadImage={uploadImage}
-                images={images}
-                tipImageOwner={tipImageOwner}
-                setselectedImg={setselectedImg}
-                selectedImg={selectedImg}
-                unsortView={unsortView}
-                sortView={sortView}
+                // captureFile={captureFile}
+                // uploadImage={uploadImage}
+                // images={images}
+                // tipImageOwner={tipImageOwner}
+                // setselectedImg={setselectedImg}
+                // selectedImg={selectedImg}
+                // unsortView={unsortView}
+                // sortView={sortView}
                 
               />
             </Route>
