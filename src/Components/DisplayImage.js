@@ -70,9 +70,6 @@ function DisplayImage({ currentAccount }) {
         }
     }
     const sortView = () => {
-        // this.setState({
-    
-        // })
         const sorted = [...images].sort((a,b) => {
           return b.tipAmount - a.tipAmount
         })
@@ -82,24 +79,18 @@ function DisplayImage({ currentAccount }) {
     }
     
     const unsortView = () => {
-        // this.setState({
         const sortedReverse = [...images].reverse();
         setImages(sortedReverse)
-        // this.setState({ loading: false})
         setIsLoading(false)
     }
     
     const setTipAmount = (e) => {
-        // this.setState({tipAm: e.target.value})
-        // const am = e.target.value
         setTipAm(e.target.value)
     };
     const tipImageOwner = (id, tipAmount) => {
-        // this.setState({ loading: true })
         setIsLoading(true)
         FundPostContractObj.methods.tipImageOwner(id).send({ from: currentAccount, value: tipAmount }).on('transactionHash', (hash) => {
-          // this.setState({ loading: false })
-          setIsLoading(false)
+        setIsLoading(false)
         })
     }
 
@@ -114,10 +105,6 @@ function DisplayImage({ currentAccount }) {
         }
         
     }, [currentAccount])
-    
-
-    // render() {
-        // const {tipAm} = this.state
         const property = {
             imageUrl: "https://bit.ly/2Z4KKcF",
             imageAlt: "Rear view of modern home with pool",
@@ -142,14 +129,116 @@ function DisplayImage({ currentAccount }) {
                 // borderBottomWidth="4px"
                 >
                 <Stack align="center" colorScheme="#FEE09D">
-                <Button className="rankButton" backgroundColor="#3cb371" size="md" variant="ghost"  >
+                <Button className="rankButton" backgroundColor="#3cb371" size="md" variant="ghost" onClick={() => sortView()}  >
                     Rank Posts by &nbsp;<span className="CELO"> $CELO</span>
                 </Button>
+                {/* <Button className="rankButton" backgroundColor="#3cb371" size="md" variant="ghost" onClick={() => sortView()}  >
+                    View Unranked
+                </Button> */}
                 </Stack>
                 <VStack align="center" direction="row" spacing={10} overflowY="auto" height="575px">
-                    {currentAccount ? 
-                <Center>
-                <Box padding="8px" maxW="lg" borderWidth="4px" borderRadius="lg" borderColor="#FEE09D" overflow="hidden" backgroundColor="#3cb371">
+                    {/* {currentAccount ?  */}
+                    {images.map((image, key) => {
+                        <Center>
+                        <Box key={key} padding="8px" maxW="lg" borderWidth="4px" borderRadius="lg" borderColor="#FEE09D" overflow="hidden" backgroundColor="#3cb371">
+                            <Box
+                                color="gray.500"
+                                fontWeight="semibold"
+                                letterSpacing="wide"
+                                fontSize="xs"
+                                textTransform="uppercase"
+                                padding="5px"
+                                backgroundColor="FEE09D"
+                                ml="2"
+                            >
+                            <Tag
+                                size="lg"
+                                borderRadius="full"
+                                // ml={3}
+                                // mr={-2}
+                                background="#FEE09D"
+                            >
+                                {/* <TagLabel color="#4d8a68">Posted by {`${currentAccount.substr(0,6)}...${currentAccount.substr(-4)}`} </TagLabel> */}
+                                <TagLabel color="#4d8a68">Posted by {image.author}
+
+                                </TagLabel>
+                                <Avatar borderStyle="solid" borderColor="#37CE81" borderWidth="2px" padding="1px" mr="-13px" ml={4} size="sm" bg="transparent" src={avatar} />
+                            </Tag>
+        
+                            </Box>
+                            <Image borderRadius="lg" src={`https://ipfs.infura.io/ipfs/${image.hash}`} alt={property.imageAlt} />
+        
+                             <Box p="6">
+                                <Box d="flex" alignItems="baseline">
+                                <Badge borderRadius="full" px="2" backgroundColor="#FEE09D">
+                                    DESCRIPTION
+                                </Badge>
+                                <Box
+                                    color="white"
+                                    fontWeight="bold"
+                                    letterSpacing="wide"
+                                    fontSize="s"
+                                    textTransform="uppercase"
+                                    ml="2"
+                                    backgroundColor="#4d8a68"
+                                    borderRadius="5px"
+                                    padding="6px"
+                                >
+                                    {image.description}
+                                </Box>
+                                </Box>
+                            </Box>
+                            <HStack>
+                            <Tag key={key} size="lg" colorScheme="teal" borderRadius="full">
+                                <Avatar
+                                    src="https://assets.coingecko.com/coins/images/11090/small/icon-celo-CELO-color-500.png?1592293590"
+                                    size="xs"
+                                    name="cUSD"
+                                    ml={-1}
+                                    mr={2}
+                                />
+                                <TagLabel color="#4d8a68" >
+                                    {Web3.utils.fromWei(
+                                image.tipAmount.toString(),
+                                "Ether"
+                              )}{" "}
+                              </TagLabel>
+                            </Tag>
+                            <Stack width="40%" backgroundColor="white" placeholder="Media Description" borderWidth="4px" borderColor="#FEE09D" textColor="#3CB371" >
+                            <input
+                                type="text"
+                                style={{width:"100px"}} 
+                                className="form-control"
+                                onChange={(e) => setTipAmount(e)}
+                                placeholder="cUSD Tip"
+                                padding="5px"
+                                required />
+                            </Stack>
+                            <Stack width="20%" variant="ghost" backgroundColor="#FEE09D" placeholder="Media Description" borderWidth="3px" borderColor="#4d8a68" textColor="#3CB371" borderRadius="5px" >
+                                <button type="submit"
+                                 name={image.id}
+                                 onClick={(event) => {
+                                    console.log({ tipAm });
+                                    let tipAmount = Web3.utils.toWei(
+                                      tipAm.toString(),
+                                      "ether"
+                                    );
+                                    console.log(event.target.name, tipAmount);
+                                    tipImageOwner(
+                                      event.target.name,
+                                      tipAmount
+                                    );
+                                    console.log(tipAmount, tipAm);
+                                  }}
+                                >TIP cUSD</button>
+                            </Stack>
+                            </HStack>
+                            </Box>
+                            </Center>
+
+                    })}
+                    <Center>
+                <Box width="800px" padding="8px" maxW="lg" borderWidth="4px" borderRadius="lg" borderColor="#FEE09D" overflow="hidden" backgroundColor="#3cb371">
                     <Box
                         color="gray.500"
                         fontWeight="semibold"
@@ -160,63 +249,29 @@ function DisplayImage({ currentAccount }) {
                         backgroundColor="FEE09D"
                         ml="2"
                     >
-                    <Tag
-                        size="lg"
-                        borderRadius="full"
-                        // ml={3}
-                        // mr={-2}
-                        background="#FEE09D"
-                    >
-                        <TagLabel color="#4d8a68">Posted by {`${currentAccount.substr(0,6)}...${currentAccount.substr(-4)}`}
-                        </TagLabel>
-                        <Avatar borderStyle="solid" borderColor="#37CE81" borderWidth="2px" padding="1px" mr="-13px" ml={4} size="sm" bg="transparent" src={avatar} />
-                    </Tag>
+                    
+                        <Skeleton startColor="#FEE09D" endColor="yellow.200" height="20px" />
+
+                        
+                        {/* <Skeleton startColor="#FEE09D" endColor="yellow.200" height="20px" /> */}
+                    <br />
+                    
 
                     </Box>
-                    <Image borderRadius="lg" src={property.imageUrl} alt={property.imageAlt} />
+                    <Skeleton startColor="#4d8a68" endColor="teal" height="300px" />
+                    <br />
+                    
+                        
+                        <Skeleton startColor="#FEE09D" endColor="yellow.200" height="20px" />
 
-                     <Box p="6">
-                        <Box d="flex" alignItems="baseline">
-                        <Badge borderRadius="full" px="2" backgroundColor="#FEE09D">
-                            DESCRIPTION
-                        </Badge>
-                        <Box
-                            color="white"
-                            fontWeight="bold"
-                            letterSpacing="wide"
-                            fontSize="s"
-                            textTransform="uppercase"
-                            ml="2"
-                            backgroundColor="#4d8a68"
-                            borderRadius="5px"
-                            padding="6px"
-                        >
-                            Hey there it is me Elio. I am from India. I am learning Blockchain development
-                        </Box>
-                        </Box>
-                    </Box>
+                        {/* <Skeleton startColor="#FEE09D" endColor="yellow.200" height="40px" /> */}
+
+                        
                     <HStack>
-                    <Tag size="lg" colorScheme="teal" borderRadius="full">
-                        <Avatar
-                            src="https://assets.coingecko.com/coins/images/11090/small/icon-celo-CELO-color-500.png?1592293590"
-                            size="xs"
-                            name="cUSD"
-                            ml={-1}
-                            mr={2}
-                        />
-                        <TagLabel color="#4d8a68" >2</TagLabel>
-                    </Tag>
-                    <Stack width="40%" backgroundColor="white" placeholder="Media Description" borderWidth="4px" borderColor="#FEE09D" textColor="#3CB371" >
-                    <input
-                        type="text"
-                        style={{width:"100px"}} 
-                        className="form-control"
-                        // onChange={this.setTip}
-                        placeholder="cUSD Tip"
-                        padding="5px"
-                        required />
-                    </Stack>
-                    <Stack width="20%" variant="ghost" backgroundColor="#FEE09D" placeholder="Media Description" borderWidth="3px" borderColor="#4d8a68" textColor="#3CB371" borderRadius="5px" ><button type="submit">TIP cUSD</button></Stack>
+                    <Skeleton startColor="teal" endColor="yellow.200" width="20px" />
+                    
+                    
+                    {/* <Stack width="20%" variant="ghost" backgroundColor="#FEE09D" placeholder="Media Description" borderWidth="3px" borderColor="#4d8a68" textColor="#3CB371" borderRadius="5px" ><button type="submit">TIP cUSD</button></Stack> */}
                     </HStack>
 
                        
@@ -236,8 +291,9 @@ function DisplayImage({ currentAccount }) {
                         </Box>
                    {/* </Box> */}
                     </Box>
-                    </Center>:<div>Hey There</div>
-}
+                    </Center>
+                <div>Hey There</div>
+
                     
                     </VStack>
 
