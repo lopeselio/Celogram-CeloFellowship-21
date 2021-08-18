@@ -20,12 +20,12 @@ import "@fontsource/inter";
 import Web3 from "web3";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Browse from './Pages/Browse';
+import NFTMarketPlaceHeader from "./Pages/NFTMarketPlace";
 const ContractKit = require("@celo/contractkit")
 // const { create } = require('ipfs-http-client')
 let kit
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
-
 
 function App() {
 
@@ -230,6 +230,11 @@ function App() {
                 // unsortView={unsortView}
                 // sortView={sortView}
                 
+              />
+            </Route>
+            <Route exact path="/marketplace">
+              <NFTMarketPlaceHeader
+                currentAccount={currentAccount}                
               />
             </Route>
           </Switch>
