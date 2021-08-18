@@ -43,7 +43,7 @@ function Header({ currentAccount }) {
       </div>
       <Link to="/fundraisers"><Button colorScheme="whatsapp" variant="ghost" className="buttonComp1">Fundraisers</Button></Link>
       <Spacer />
-      <Link to="/NFT"><Button colorScheme="whatsapp" variant="solid" className="buttonComp">CELOGRAM NFT</Button></Link>
+      <Link to="/marketplace"><Button colorScheme="whatsapp" variant="solid" className="buttonComp">CELOGRAM NFT</Button></Link>
       <div className="headercomp">
         {
           isMetamaskInstalled ? 
