@@ -50,7 +50,7 @@ function App() {
   useEffect(() => {
     if(window.celo && currentAccount){
       setChainId(window.celo.networkVersion);
-      init();
+      // init();
       
       window.celo.on("accountsChanged", (accounts) => {
         setCurrentAccount(accounts[0]);
@@ -62,14 +62,14 @@ function App() {
     }
   }, [currentAccount]);
 
-  const init = async () => {
-    const web3 = new Web3(window.celo);
-    kit = ContractKit.newKitFromWeb3(web3);
-    const networkId = await kit.web3.eth.net.getId();
-    const networkData = FundPostABI.networks[networkId];
-    let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
-    setFundPost(FundPostContractObj);
-}
+//   const init = async () => {
+//     const web3 = new Web3(window.celo);
+//     kit = ContractKit.newKitFromWeb3(web3);
+//     const networkId = await kit.web3.eth.net.getId();
+//     const networkData = FundPostABI.networks[networkId];
+//     let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+//     setFundPost(FundPostContractObj);
+// }
 
   const sortView = () => {
     // this.setState({
