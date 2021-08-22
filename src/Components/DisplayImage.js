@@ -19,7 +19,6 @@ import svgAvatarGenerator from "../utils/avatar";
 import FundPostABI from '../abis/FundPost.json'
 const ContractKit = require("@celo/contractkit")
 let kit
-// FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
 var FundPostContractObj
 // const ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
 const ipfsClient = require('ipfs-http-client')
@@ -62,7 +61,7 @@ function DisplayImage({ currentAccount }) {
         console.log(networkData, networkId)
         if(networkData)
         {
-        FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address);
         // setFundPost(FundPostContractObj);
         if(FundPostContractObj){
         const imagesCount = await FundPostContractObj.methods.imageCount().call()     
