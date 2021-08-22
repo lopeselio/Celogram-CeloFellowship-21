@@ -20,7 +20,7 @@ import {
   const ContractKit = require("@celo/contractkit") 
   let kit
   const ipfsClient = require('ipfs-http-client')
-  const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
+  const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'https' })
   var FundPostContractObj
  
 
@@ -57,7 +57,7 @@ function Upload({ currentAccount }) {
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
         const networkData = FundPostABI.networks[networkId];
-        FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
+        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address);
         console.log(FundPostContractObj)
         // ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
 
