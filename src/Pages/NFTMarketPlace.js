@@ -17,6 +17,7 @@ import {
     Tag
   } from "@chakra-ui/react";
 import Home from '../Components/Home'
+import CreateItem from '../Components/create-item';
 // class Upload extends Component {
 function NFTMarketPlaceHeader({ currentAccount }) {
     let { path, url } = useRouteMatch();
@@ -46,6 +47,7 @@ function NFTMarketPlaceHeader({ currentAccount }) {
                             </Route>
                             <Route exact  path={`${path}/create-item`}>
                                 {
+                                    <CreateItem currentAccount={currentAccount} />
                                     // <SuperChats currentAccount={currentAccount} />
                                 }
                             </Route>
