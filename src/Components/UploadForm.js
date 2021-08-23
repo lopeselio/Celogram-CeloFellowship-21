@@ -12,15 +12,15 @@ import {
   } from "@chakra-ui/react";
   import { TiPlus } from "react-icons/ti";
   import FundPostABI from '../abis/FundPost.json'
-   
   import DisplayImage from './DisplayImage'
+  import { create } from 'ipfs-http-client'
+  
   
 
   
   const ContractKit = require("@celo/contractkit") 
   let kit
-  const ipfsClient = require('ipfs-http-client')
-  const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'https' })
+  
   var FundPostContractObj
  
 
@@ -31,6 +31,7 @@ function Upload({ currentAccount }) {
       const [Bbuffer, setBuffer] = useState(undefined);
       const [ isLoading, setIsLoading ] = useState(false);
       // const [FundPost, setFundPost] = useState(null);
+      const ipfs = create({ host: 'localhost', port: '5001', protocol: 'https' })
       const [Desc, setDesc] = useState('')
       // captureFile = event => {
 
@@ -57,7 +58,10 @@ function Upload({ currentAccount }) {
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
         const networkData = FundPostABI.networks[networkId];
-        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address);
+        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address, {
+          from: currentAccount, // default from address
+          gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+      });
         console.log(FundPostContractObj)
         // ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
 
