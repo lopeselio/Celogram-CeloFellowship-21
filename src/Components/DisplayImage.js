@@ -17,12 +17,14 @@ import {
 import '../Pages/Browse.css'
 import svgAvatarGenerator from "../utils/avatar";
 import FundPostABI from '../abis/FundPost.json'
+import { create } from 'ipfs-http-client'
+const ipfs = create({ host: 'localhost', port: '5001', protocol: 'https' })
 const ContractKit = require("@celo/contractkit")
 let kit
 var FundPostContractObj
 // const ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
-const ipfsClient = require('ipfs-http-client')
-const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
+// const ipfsClient = require('ipfs-http-client')
+
 
 
 
@@ -61,7 +63,10 @@ function DisplayImage({ currentAccount }) {
         console.log(networkData, networkId)
         if(networkData)
         {
-        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address);
+        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address, {
+            from: currentAccount, // default from address
+            gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+        });
         // setFundPost(FundPostContractObj);
         if(FundPostContractObj){
         const imagesCount = await FundPostContractObj.methods.imageCount().call()     
