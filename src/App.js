@@ -21,11 +21,11 @@ import Web3 from "web3";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Browse from './Pages/Browse';
 import NFTMarketPlaceHeader from "./Pages/NFTMarketPlace";
+import { create } from 'ipfs-http-client'
+
 const ContractKit = require("@celo/contractkit")
 // const { create } = require('ipfs-http-client')
 let kit
-const ipfsClient = require('ipfs-http-client')
-const ipfs = ipfsClient({ host: 'localhost', port: '5001', protocol: 'http' })
 
 function App() {
 
@@ -36,6 +36,7 @@ function App() {
   const [selectedImg, setSelectedImg] = useState(null);
   const [images, setImages] = useState([]);
   const [Buffer, setBuffer] = useState(undefined);
+  const ipfs = create({ host: 'localhost', port: '5001', protocol: 'https' })
 
   const getCurrentAccount = async () => {
     setIsLoading(true);
