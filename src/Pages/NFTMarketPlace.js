@@ -18,6 +18,8 @@ import {
   } from "@chakra-ui/react";
 import Home from '../Components/Home'
 import CreateItem from '../Components/create-item';
+import MyAssets from '../Components/my-assets';
+import CeloCreatorDashboard from '../Components/creator-dashboard';
 // class Upload extends Component {
 function NFTMarketPlaceHeader({ currentAccount }) {
     let { path, url } = useRouteMatch();
@@ -35,27 +37,32 @@ function NFTMarketPlaceHeader({ currentAccount }) {
                     
                     <VStack alignItems="flex-start" backgroundColor="#2E3337" color="#3CB371" borderRadius="15px" padding="10px" borderColor="#FEE09D" borderWidth="4px">
                         <Link to={`${url}/`}><Button justifyContent="flex-start" textAlign="left"  width="200px" variant="ghost" leftIcon={<RiHome3Fill />}>Home</Button></Link>
-                        <Link to={`${url}/create-item`}><Button colorScheme={window.location.pathname == `${url}/create-item` ? "pink" : ""} justifyContent="flex-start" width="200px" variant="ghost" leftIcon={<AiFillDollarCircle />}>Sell NFTs</Button></Link>
-                        <Link to={`${url}/my-assets`}><Button colorScheme={window.location.pathname == `${url}/my-assets` ? "pink" : ""} justifyContent="flex-start" width="200px" variant="ghost" leftIcon={<BiPurchaseTag />}>My NFTs</Button></Link>
-                        <Link to={`${url}/creator-dashboard`}><Button colorScheme={window.location.pathname == `${url}/creator-dashboard` ? "pink" : ""} justifyContent="flex-start" width="200px" variant="ghost" leftIcon={<FaHandHoldingHeart />}>Creator Dashboard</Button></Link>
+                        <Link to={`${url}/create-item`}><Button colorScheme={window.location.pathname === `${url}/create-item` ? "pink" : ""} justifyContent="flex-start" width="200px" variant="ghost" leftIcon={<AiFillDollarCircle />}>Sell NFTs</Button></Link>
+                        <Link to={`${url}/my-assets`}><Button colorScheme={window.location.pathname === `${url}/my-assets` ? "pink" : ""} justifyContent="flex-start" width="200px" variant="ghost" leftIcon={<BiPurchaseTag />}>My NFTs</Button></Link>
+                        <Link to={`${url}/creator-dashboard`}><Button colorScheme={window.location.pathname === `${url}/creator-dashboard` ? "yellow" : ""} justifyContent="flex-start" width="200px" variant="ghost" leftIcon={<FaHandHoldingHeart />}>Creator Dashboard</Button></Link>
                     </VStack>
                     <VStack alignSelf="flex-start" width="100%" px="50px">
                         <Switch>
                             <Route exact path={`${path}/`}>
-                                {/* <Streams currentAccount={currentAccount} /> */}
+                                {
                                 <Home currentAccount={currentAccount} />
+                                }
                             </Route>
                             <Route exact  path={`${path}/create-item`}>
                                 {
                                     <CreateItem currentAccount={currentAccount} />
-                                    // <SuperChats currentAccount={currentAccount} />
+                                    
                                 }
                             </Route>
                             <Route exact  path={`${path}/my-assets`}>
-                                {/* <Fundraisers currentAccount={currentAccount} /> */}
+                                {
+                                <MyAssets currentAccount={currentAccount} />
+                                }
                             </Route>
                             <Route exact  path={`${path}/creator-dashboard`}>
-                                {/* <Fundraisers currentAccount={currentAccount} /> */}
+                                {
+                                <CeloCreatorDashboard currentAccount={currentAccount} />
+                                }
                             </Route>
                         </Switch>
                     </VStack>
