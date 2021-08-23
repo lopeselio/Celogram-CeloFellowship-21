@@ -50,10 +50,20 @@ function Home({ currentAccount }) {
         const networkData2 = NFTMarketABI.networks[networkId] 
         const networkData1 = NftABI.networks[networkId]
         // if(networkData1) {
-        NFTContract = new kit.web3.eth.Contract(NftABI.abi, nftaddress)
+        NFTContract = new kit.web3.eth.Contract(NftABI.abi, nftaddress,
+        //     {
+        //     from: currentAccount, // default from address
+        //     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+        // }
+        )
         // }
         // if(networkData2) {
-        NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress)
+        NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, 
+        //     {
+        //     from: currentAccount, // default from address
+        //     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+        // }
+        )
         const data = await NFTMarketContract.methods.fetchMarketItems().call()
 
         // }
@@ -88,7 +98,12 @@ function Home({ currentAccount }) {
         const networkId = await kit.web3.eth.net.getId();
         const networkData2 = NFTMarketABI.networks[networkId] 
         
-        NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress)
+        NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, 
+        //     {
+        //     from: currentAccount, // default from address
+        //     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+        // }
+        )
 
         /* user will be prompted to pay the asking proces to complete the transaction */
         const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')   
