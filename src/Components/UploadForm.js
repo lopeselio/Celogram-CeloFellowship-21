@@ -13,7 +13,21 @@ import {
   import { TiPlus } from "react-icons/ti";
   import FundPostABI from '../abis/FundPost.json'
   import DisplayImage from './DisplayImage'
-  import { create } from 'ipfs-http-client'
+  import FundPostabi from '../utils/fundpost.json'
+  // import { create as ipfsClient} from 'ipfs-http-client'
+  // const ipfsClient = require("ipfs-http-client");
+
+  // const ipfs = create('https://ipfs.infura.io:5001/api/v0')
+  // const { create } = require('ipfs-http-client')
+  // const ipfs = create({
+  //   host: "ipfs.infura.io",
+  //   port: 5001,
+  //   protocol: "https",
+  // });
+
+  const ipfsClient = require('ipfs-http-client')
+  const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
+
   
   
 
@@ -23,57 +37,29 @@ import {
   
   var FundPostContractObj
  
-
-// class Upload extends Component {
 function Upload({ currentAccount }) {
-      // state = {currentImage:'https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png'}
       const [currentImage, setCurrentImage] = useState('https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png')
       const [Bbuffer, setBuffer] = useState(undefined);
       const [ isLoading, setIsLoading ] = useState(false);
-      // const [FundPost, setFundPost] = useState(null);
-      const ipfs = create({ host: 'localhost', port: '5001', protocol: 'https' })
       const [Desc, setDesc] = useState('')
-      // captureFile = event => {
-
-      //   event.preventDefault()
-      //   const file = event.target.files[0]
-      //   const reader = new window.FileReader()
-      //   reader.readAsArrayBuffer(file)
-    
-      //   reader.onloadend = () => {
-      //     this.setState({ buffer: Buffer(reader.result) })
-      //     
-      //   }
-      // }
-
+      
 
       useEffect(() => {
         if(window.celo && currentAccount){
-          init();
+
         }
       }, [currentAccount]);
 
-      const init = async () => {
-        const web3 = new Web3(window.celo);
-        kit = ContractKit.newKitFromWeb3(web3);
-        const networkId = await kit.web3.eth.net.getId();
-        const networkData = FundPostABI.networks[networkId];
-        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address, {
-          from: currentAccount, // default from address
-          gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-      });
-        console.log(FundPostContractObj)
-        // ipfs = window.IpfsHttpClient.create({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
-
-        // setFundPost(FundPostContractObj);
-               
-        // const ipfs = create("http://localhost:5001/");
-        // orbitdb = await OrbitDb.createInstance(ipfs);
-        // db = await orbitdb.docs("niftysubs");
-        // pubsub = new IPFSpubsub(ipfs, "niftysubs");
-        // subscribeToTopic();
-        // initDb();
-    }
+    //   const init = async () => {
+    //     const web3 = new Web3(window.celo);
+    //     kit = ContractKit.newKitFromWeb3(web3);
+    //     const networkId = await kit.web3.eth.net.getId();
+    //     const networkData = FundPostABI.networks[networkId];
+    //     FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, "0xd5D69912a00a919dbB1613382d6dF5650c580ec7"
+    //   );
+    //     console.log(FundPostContractObj)
+        
+    // }
 
       const handleDesc = (event) => {
         event.preventDefault()
@@ -92,7 +78,7 @@ function Upload({ currentAccount }) {
           const buffer = Buffer(reader.result)
           setBuffer(buffer)
           // this.setState({ buffer: Buffer(reader.result) })
-          console.log('buffer', Bbuffer)
+          console.log('buffer',buffer)
         }
       }
 
@@ -107,7 +93,8 @@ function Upload({ currentAccount }) {
         reader.readAsDataURL(e.target.files[0])
     
       };
-      const uploadImage = (description) => {
+      async function uploadImage (description) {
+        // await window.celo.enable()
         if (currentAccount !== undefined) {
           console.log("Submitting file to ipfs...");
           console.log(description)
@@ -115,11 +102,21 @@ function Upload({ currentAccount }) {
           ipfs.add(Bbuffer, (error, result) => {
             console.log("Ipfs result", result);
             if (error) {
-              console.error(error);
+              // console.error(error);
               return;
             }
             // this.setState({ loading: true });
             setIsLoading(true);
+            
+            const web3 = new Web3(window.celo);
+            kit = ContractKit.newKitFromWeb3(web3);
+            const networkId =  kit.web3.eth.net.getId();
+            const networkData = FundPostABI.networks[networkId];
+            let FundPostContractObj = new kit.web3.eth.Contract(FundPostabi.abi, "0x05460a3bDe86e616EA9137C8854aA55225679310", {
+              // from: currentAccount, // default from address
+              gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+              gasLimit: "50000"
+          })
             FundPostContractObj.methods
               .uploadImage(result[0].hash, description)
               .send({ from: currentAccount })
@@ -184,7 +181,7 @@ function Upload({ currentAccount }) {
               onSubmit={(event) => {
               event.preventDefault()
               const description = {Desc}
-              console.log(description)
+              // console.log(description)
               uploadImage(description)
             }}
             >
