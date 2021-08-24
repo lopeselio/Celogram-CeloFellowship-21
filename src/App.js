@@ -21,7 +21,8 @@ import Web3 from "web3";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Browse from './Pages/Browse';
 import NFTMarketPlaceHeader from "./Pages/NFTMarketPlace";
-import { create } from 'ipfs-http-client'
+
+
 
 const ContractKit = require("@celo/contractkit")
 // const { create } = require('ipfs-http-client')
@@ -36,7 +37,6 @@ function App() {
   const [selectedImg, setSelectedImg] = useState(null);
   const [images, setImages] = useState([]);
   const [Buffer, setBuffer] = useState(undefined);
-  const ipfs = create({ host: 'localhost', port: '5001', protocol: 'https' })
 
   const getCurrentAccount = async () => {
     setIsLoading(true);
@@ -71,81 +71,6 @@ function App() {
 //     let FundPostContractObj = new web3.eth.Contract(FundPostABI.abi, networkData.address);
 //     setFundPost(FundPostContractObj);
 // }
-
-  const sortView = () => {
-    // this.setState({
-
-    // })
-    const sorted = [...images].sort((a,b) => {
-      return b.tipAmount - a.tipAmount
-    })
-    setImages(sorted)
-    // this.setState({ loading: false})
-    setIsLoading(false)
-  }
-
-  const unsortView = () => {
-    // this.setState({
-    const sortedReverse = [...images].reverse();
-    setImages(sortedReverse)
-    // this.setState({ loading: false})
-    setIsLoading(false)
-  }
-
-  const captureFile = event => {
-
-    event.preventDefault()
-    const file = event.target.files[0]
-    const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
-
-    reader.onloadend = () => {
-      const buffer = Buffer(reader.result)
-      setBuffer(buffer)
-      // this.setState({ buffer: Buffer(reader.result) })
-      console.log('buffer', Buffer)
-    }
-  }
-
-  const uploadImage = (description) => {
-    if (currentAccount !== undefined) {
-      console.log("Submitting file to ipfs...");
-      ipfs.add(Buffer, (error, result) => {
-        console.log("Ipfs result", result);
-        if (error) {
-          console.error(error);
-          return;
-        }
-        // this.setState({ loading: true });
-        setIsLoading(true);
-        FundPost.methods
-          .uploadImage(result[0].hash, description)
-          .send({ from: currentAccount })
-          .on("transactionHash", (hash) => {
-            // this.setState({ isLoading: false });
-            setIsLoading(false)
-          });
-        if (isLoading) {
-          window.location.reload();
-        }
-      });
-    } else {
-      window.alert("Please connect your Celo Wallet to upload!");
-    }
-  };
-
-  const tipImageOwner = (id, tipAmount) => {
-    
-    setIsLoading(true)
-    FundPost.methods.tipImageOwner(id).send({ from: currentAccount, value: tipAmount }).on('transactionHash', (hash) => {
-      
-      setIsLoading(false)
-    })
-  }
-
-  const setselectedImg = (url) => {
-    setSelectedImg(url)
-  }
 
   return (
     <ChakraProvider theme={Theme}>

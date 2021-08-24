@@ -17,8 +17,11 @@ import {
 import '../Pages/Browse.css'
 import svgAvatarGenerator from "../utils/avatar";
 import FundPostABI from '../abis/FundPost.json'
-import { create } from 'ipfs-http-client'
-const ipfs = create({ host: 'localhost', port: '5001', protocol: 'https' })
+import FundPostabi from '../utils/fundpost.json'
+// import { create } from 'ipfs-http-client'
+// const ipfs = create({ host: 'localhost', port: '5001', protocol: 'http' })
+const ipfsClient = require('ipfs-http-client')
+const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 const ContractKit = require("@celo/contractkit")
 let kit
 var FundPostContractObj
@@ -56,6 +59,7 @@ function DisplayImage({ currentAccount }) {
       }, [currentAccount]);
 
       const init = async () => {
+        // await window.celo.enable()        
         const web3 = new Web3(window.celo);
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
@@ -63,10 +67,14 @@ function DisplayImage({ currentAccount }) {
         console.log(networkData, networkId)
         if(networkData)
         {
-        FundPostContractObj = new kit.web3.eth.Contract(FundPostABI.abi, networkData.address, {
-            from: currentAccount, // default from address
-            gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-        });
+        FundPostContractObj = new kit.web3.eth.Contract(FundPostabi.abi, "0x05460a3bDe86e616EA9137C8854aA55225679310"
+            , {
+            // from: currentAccount, // default from address
+            // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+            gasLimit: "50000"
+
+        }
+        );
         // setFundPost(FundPostContractObj);
         if(FundPostContractObj){
         const imagesCount = await FundPostContractObj.methods.imageCount().call()     

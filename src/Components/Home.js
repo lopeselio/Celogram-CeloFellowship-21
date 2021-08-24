@@ -43,7 +43,7 @@ function Home({ currentAccount }) {
     }, [])
 
     async function loadNFTs() {
-
+        // await window.celo.enable()
         const web3 = new Web3(window.celo)
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
@@ -51,6 +51,10 @@ function Home({ currentAccount }) {
         const networkData1 = NftABI.networks[networkId]
         // if(networkData1) {
         NFTContract = new kit.web3.eth.Contract(NftABI.abi, nftaddress,
+            {
+                // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+                gasLimit: "50000"
+            }
         //     {
         //     from: currentAccount, // default from address
         //     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
@@ -58,7 +62,11 @@ function Home({ currentAccount }) {
         )
         // }
         // if(networkData2) {
-        NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, 
+        NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress,
+            {
+                // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+                gasLimit: "50000"
+            } 
         //     {
         //     from: currentAccount, // default from address
         //     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
@@ -93,12 +101,17 @@ function Home({ currentAccount }) {
     }
 
     async function buyNft(nft) {
-        const web3 = new Web3(window.celo)
+        // await window.celo.enable()
+        const web3 = new Web3("https://alfajores-forno.celo-testnet.org")
         kit = ContractKit.newKitFromWeb3(web3);
         const networkId = await kit.web3.eth.net.getId();
         const networkData2 = NFTMarketABI.networks[networkId] 
         
         NFTMarketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, 
+            {
+            // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+            gasLimit: "21000"
+            }
         //     {
         //     from: currentAccount, // default from address
         //     gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case

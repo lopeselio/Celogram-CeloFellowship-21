@@ -40,6 +40,7 @@ function ChatInterface({ currentAccount, isLocked, pubsubTopic }) {
     }, [messages, isLocked]);
 
     const init = async () => {
+        await window.celo.enable()
         web3 = new Web3(window.celo);
         // let superchatContractObj = new web3.eth.Contract(SuperchatABI, superchatContractAddress);
         // setSuperchatContract(superchatContractObj);

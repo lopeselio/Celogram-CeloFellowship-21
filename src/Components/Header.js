@@ -24,11 +24,11 @@ function Header({ currentAccount }) {
       setIsMetamaskInstalled(true);  
       let svg = svgAvatarGenerator(currentAccount, {dataUri: true});
       setAvatar(svg);
-    //   const web3 = new Web3(window.celo);
-    //   window.celo.on("chainChanged", async (chainId) => {
-    //     const newChainId = await web3.eth.getChainId();
-    //     chainIdSetter(newChainId);
-    //   });
+      // const web3 = new Web3(window.celo);
+      // window.celo.on("chainChanged", async (chainId) => {
+      //   const newChainId = await web3.eth.getChainId();
+      //   chainIdSetter(newChainId);
+      // });
     } else {
       setIsMetamaskInstalled(false);
     }

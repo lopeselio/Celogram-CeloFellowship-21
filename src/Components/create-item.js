@@ -26,9 +26,12 @@ import Web3 from 'web3'
 import {
     nftaddress, nftmarketaddress
 } from '../utils/config'
-import { create } from 'ipfs-http-client'
+// import { create } from 'ipfs-http-client'
+// import { wait } from '@testing-library/react';
 const ContractKit = require("@celo/contractkit")
-const client = create('https://ipfs.infura.io:5001/api/v0')
+// const client = create('https://ipfs.infura.io:5001/api/v0')
+const ipfsClient = require('ipfs-http-client')
+const client = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 
 let kit
 
@@ -74,26 +77,37 @@ export default function CreateItem ({ currentAccount }) {
     }
 
     async function createSale(url) {
+        // await window.celo.enable()
         const web3 = new Web3(window.celo)
         kit = ContractKit.newKitFromWeb3(web3);
+        const accounts = await kit.web3.eth.getAccounts();
         const networkId = await kit.web3.eth.net.getId();
         const networkData2 = NFTMarketABI.networks[networkId] 
         const networkData1 = NftABI.networks[networkId]
-        let contract = new kit.web3.eth.Contract(NftABI.abi, nftaddress, {
-            from: currentAccount, // default from address
-            gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-        })
+        let contract = new kit.web3.eth.Contract(NftABI.abi, nftaddress
+            , {
+            // from: currentAccount, // default from address
+            // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+            gasLimit: "50000"
+            // gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+        }
+        )
+        // let contract = new ethers.Contract(nftaddress, NftABI.abi, accounts[0])
         let transaction = await contract.methods.createToken(url)
-        let tx = await transaction.wait()
-        let event = tx.events[0]
+        // let tx = await transaction.wait()
+        let event = await transaction.events[0]
         let value = event.args[2]
         let tokenId = value.toNumber()
 
         const price = ethers.utils.parseUnits(formInput.price, 'ether')
-        contract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, {
-            from: currentAccount, // default from address
-            gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-        })
+        contract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress
+            , {
+            // from: currentAccount, // default from address
+            // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+            gasLimit: "50000"
+            // gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
+        }
+        )
         let listingPrice = await contract.methods.getListingPrice()
         listingPrice = listingPrice.toString()
         transaction = await contract.methods.createMarketItem(
