@@ -2178,12 +2178,12 @@
     "44787": {
       "events": {},
       "links": {},
-      "address": "0x48144aD59858D5A6Be645Ed90Bdb50463111A239",
-      "transactionHash": "0x5a49957cbf4310ee59f1345a0dfc9bec401dce282f42af54dcc0f38599e76d62"
+      "address": "0x534F91A5C90fcdbc389C6C0ceB87acBAeF27613f",
+      "transactionHash": "0x54481315832ff5aef3ddcd5b86c13e6dfec9b181ab7f75ef87674f474ed776a7"
     }
   },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-08-22T09:37:37.977Z",
+  "updatedAt": "2021-08-24T07:38:52.214Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
