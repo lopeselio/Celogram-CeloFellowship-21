@@ -40,22 +40,25 @@ export default function MyAssets({ currentAccount }) {
     //   const connection = await web3Modal.connect()
     //   const provider = new ethers.providers.Web3Provider(connection)
     //   const signer = provider.getSigner()
+    // await window.celo.enable()
     const web3 = new Web3(window.celo)
     kit = ContractKit.newKitFromWeb3(web3);
     const networkId = await kit.web3.eth.net.getId();
     const networkData2 = NFTMarketABI.networks[networkId] 
     const networkData1 = NftABI.networks[networkId]
-    const tokenContract = new kit.web3.eth.Contract(NftABI.abi, nftaddress, 
+    const tokenContract = new kit.web3.eth.Contract(NftABI.abi, nftaddress, {
+        // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+        gasLimit: "50000"
+    }
         // {
         // from: currentAccount, // default from address
         // gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
         // }
     ) 
-    const marketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, 
-        // {
-        // from: currentAccount, // default from address
-        // gasPrice: '20000000000' // default gas price in wei, 20 gwei in this case
-        // }
+    const marketContract = new kit.web3.eth.Contract(NFTMarketABI.abi, nftmarketaddress, {
+        // gasPrice: '20000000000', // default gas price in wei, 20 gwei in this case
+        gasLimit: "50000"
+    }
     )  
     //   const marketContract = new ethers.Contract(nftmarketaddress, NFTMarketABI.abi, signer)
     //   const tokenContract = new ethers.Contract(nftaddress, NftABI.abi, provider)
